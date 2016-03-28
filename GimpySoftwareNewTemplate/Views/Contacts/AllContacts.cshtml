@@ -250,7 +250,6 @@
 
             });
 
-
             $('#tableWithDynamicRows').DataTable({
                 bDestroy: true,
             });
@@ -258,7 +257,6 @@
             $('.chkall').click(function () {
                 return false;
             });
-
        
             $('#country').change(function () {
                 var country = $('#country').val();
@@ -300,11 +298,11 @@
                 if (!checkboxClicked) {
                     cid = $(this).find("td.tdid input").val();
                     var url = "ContactDetail?cid=" + cid;
-                   // var col = $(this).parent().children().index($(this).parent());
-                    //alert('Col:' + col);
-                   // var width = window.innerWidth - 100;
-                    //$('table td:not(:first-child, :last-child)')
-                   // $.colorbox({ href: url, iframe: true, height: 500, width: width });
+                    var col = $(this).parent().children().index($(this).parent());
+                    alert('Col:' + col);
+                    var width = window.innerWidth - 100;
+                    $('table td:not(:first-child, :last-child)')
+                    $.colorbox({ href: url, iframe: true, height: 500, width: width });
                 }
                 else {
                     checkboxClicked = false;
