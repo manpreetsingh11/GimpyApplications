@@ -1,0 +1,40 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="content-type" content="text/html;charset=UTF-8" />
+    <meta charset="utf-8" />
+    <title>@ViewBag.Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no" />
+    <link rel="icon" type="image/x-icon" href="@Url.Content("~/Content/Images/favicon.ico")" />
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-touch-fullscreen" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta content="" name="description" />
+    <meta content="" name="author" />
+    @*@Styles.Render("~/Content/css")*@
+
+
+    <link type="text/css" rel="stylesheet" href="@Url.Content("~/Content/assets/plugins/pace/pace-theme-flash.css")" />
+    <link type="text/css" rel="stylesheet" href="@Url.Content("~/Content/assets/plugins/simple-line-icons/simple-line-icons.css")" />
+    <link type="text/css" rel="stylesheet" href="@Url.Content("~/Content/assets/plugins/boostrapv3/css/bootstrap.min.css")" />
+    <link type="text/css" rel="stylesheet" href="@Url.Content("~/Content/assets/plugins/font-awesome/css/font-awesome.css")" />
+    <link type="text/css" rel="stylesheet" href="@Url.Content("~/Content/assets/plugins/jquery-scrollbar/jquery.scrollbar.css")" />
+    <link type="text/css" rel="stylesheet" href="@Url.Content("~/Content/assets/plugins/bootstrap-select2/select2.css")" />
+    <link type="text/css" rel="stylesheet" href="@Url.Content("~/Content/assets/plugins/switchery/css/switchery.min.css")" />
+    <link type="text/css" rel="stylesheet" href="@Url.Content("~/Content/assets/plugins/nvd3/nv.d3.min.css")" />
+    <link type="text/css" rel="stylesheet" href="@Url.Content("~/Content/assets/plugins/mapplic/css/mapplic.css")" />
+    <link type="text/css" rel="stylesheet" href="@Url.Content("~/Content/assets/plugins/rickshaw/rickshaw.min.css")" />
+    <link type="text/css" rel="stylesheet" href="@Url.Content("~/Content/assets/plugins/bootstrap-datepicker/css/datepicker3.css")" />
+    <link type="text/css" rel="stylesheet" href="@Url.Content("~/Content/assets/plugins/jquery-metrojs/MetroJs.css")" />
+    <link type="text/css" rel="stylesheet" href="@Url.Content("~/Content/pages/css/pages-icons.css")" />
+    <link type="text/css" rel="stylesheet" href="@Url.Content("~/Content/pages/css/pages.css")" />
+
+
+    @RenderSection("Styles", required: false)
+</head>
+<body class="fixed-header dashboard">
+    @RenderBody()
+    @Scripts.Render("~/bundles/jquery")
+    @RenderSection("Scripts", required: false)
+</body>
+</html>

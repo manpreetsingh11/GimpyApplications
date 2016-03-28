@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="0152c63151a04dc79f98113ef03bf79d" Name="Diagram1">
+        <EntityTypeShape EntityType="GimpyDataModel.Campaign" Width="1.5" PointX="3" PointY="4.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="GimpyDataModel.CampaignActivity" Width="1.5" PointX="5.25" PointY="4.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="GimpyDataModel.Category" Width="1.5" PointX="6" PointY="1.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="GimpyDataModel.Company" Width="1.5" PointX="8.25" PointY="3" IsExpanded="true" />
+        <EntityTypeShape EntityType="GimpyDataModel.DefaultGenre" Width="1.5" PointX="8.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="GimpyDataModel.Genre" Width="1.5" PointX="10.5" PointY="4.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="GimpyDataModel.ResetPassword" Width="1.5" PointX="0.75" PointY="8.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="GimpyDataModel.Status" Width="1.5" PointX="3" PointY="1.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="GimpyDataModel.UserInfo" Width="1.5" PointX="0.75" PointY="4.125" IsExpanded="true" />
+        <AssociationConnector Association="GimpyDataModel.FK__Campaign__UserId__245D67DE" ManuallyRouted="false" />
+        <AssociationConnector Association="GimpyDataModel.FK__CampaignA__Campa__3587F3E0" ManuallyRouted="false" />
+        <AssociationConnector Association="GimpyDataModel.FK__CampaignA__Compa__3493CFA7" ManuallyRouted="false" />
+        <AssociationConnector Association="GimpyDataModel.FK__CampaignA__Statu__339FAB6E" ManuallyRouted="false" />
+        <AssociationConnector Association="GimpyDataModel.FK__Company__Categor__208CD6FA" ManuallyRouted="false" />
+        <AssociationConnector Association="GimpyDataModel.FK__Company__UserId__2180FB33" ManuallyRouted="false" />
+        <AssociationConnector Association="GimpyDataModel.FK__Genre__UserId__1DB06A4F" ManuallyRouted="false" />
+        <AssociationConnector Association="GimpyDataModel.CampaignCompanies" ManuallyRouted="false" />
+        <AssociationConnector Association="GimpyDataModel.CompanyGenres" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

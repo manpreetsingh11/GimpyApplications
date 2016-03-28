@@ -1,0 +1,66 @@
+﻿@{
+    Layout = "~/Views/Shared/_LayoutLogin.cshtml";
+    ViewBag.Title = "Log in";
+}
+
+        <div class="p-l-50 m-l-20 p-r-50 m-r-20 p-t-50 m-t-30 sm-p-l-15 sm-p-r-15 sm-p-t-40"> 
+          
+            <div class="col-md-12">
+                <h2 style="margin-top:60px;color:black;" class="pull-left">Login</h2>
+             <a style="margin-top:70px;color:black;font-size:14px;" class="pull-right" href="@Url.Action("ResetPassword","Account")">Forgot Password?</a>
+            </div>
+            <br />
+            <!-- START Login Form -->
+            <form id="form-login" class="p-t-15" role="form" method="post" action="@Url.Action("Login","Account")">
+                <!-- START Form Control-->
+              
+                <div class="form-group form-group-default">
+                    <label >User name</label>
+                    <div class="controls">
+                        <input type="text" name="username" title="Please enter user name" placeholder="User Name" class="form-control" required>
+                    </div>
+                </div>
+
+                <!-- END Form Control-->
+                <!-- START Form Control-->
+                <div class="form-group form-group-default">
+                    <label>Password</label>
+                    <div class="controls">
+                        <input type="password" class="form-control" title="Please enter password" name="password" placeholder="Credentials" required>
+                    </div>
+                </div>
+                <!-- START Form Control-->
+                <div class="row">
+                    <div class="col-md-10 text-left">
+                        @{
+                            if (ViewBag.LoginError != null)
+                            {
+
+                                <div class="alert alert-danger" role="alert">
+                                    <a class="close" data-dismiss="alert"></a>
+                                    <strong>@ViewBag.LoginError</strong>
+                                </div>
+                            }
+                        }
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-5 text-left">
+                        <button type="submit" class="btn btn-success btn-cons m-t-10">Sign in</button>
+                    </div>
+                    <div class="col-md-4" >
+                        <a href="@Url.Action("Register","Account")" class="btn btn-info btn-cons m-t-10">Register</a>
+                        @*<a href="@Url.Action("Register","Account")" class="btn btn-danger btn-cons m-t-10">Register Here</a>*@
+                    </div>
+                </div>
+                <!-- END Form Control-->
+            </form>
+            <!--END Login Form-->
+        </div>
+    
+    <!-- END Login Right Container-->
+
+@section Scripts {
+    @Scripts.Render("~/bundles/login")
+}

@@ -1,0 +1,411 @@
+﻿@{
+    ViewBag.Title = "AddContact";
+    ViewBag.Heading = "Contact Details";
+    ViewBag.Module = "Contact";
+    ViewBag.SubModule = "Add Contact";
+    Layout = "~/Views/Shared/_MainLayout.cshtml";
+    var genres = ViewBag.genres;
+    var categories = ViewBag.categories;
+
+    //var countries = ViewBag.country;
+}
+<script type="text/javascript" src="@Url.Content("~/Content/js/countries.js")"></script>
+<style>
+    /*.form-group-default has-error.focus {
+        border: 1px solid black;
+    }
+
+    .form-group-default {
+        border: 1px solid black;
+        border-radius: 4px;
+    }
+
+    label {
+        color: white;
+        padding-top: 2px;
+    }*/
+
+    .pops {
+        border: 1px solid #DD3636;
+        box-shadow: 0 0 9px rgba(191, 191, 191, 0.36);
+        z-index: 800;
+        position: absolute;
+        background-color: #DD3636;
+        padding: 5px;
+        font-family: 'helvetica neue';
+        font-size: 15px;
+        font-weight: 400;
+        line-height: 1.42857143;
+        max-width: 276px;
+        border-radius: 6px;
+        color: white;
+        left: 200px;
+        top:1px;
+    }
+
+    .arrow-down {
+           width: 0;
+    height: 0;
+    position: absolute;
+    border-top: 8px solid #DD3636;
+    border-left: 8px solid transparent;
+    border-right: 8px solid transparent;
+    left: 212px;
+    top: 33px;
+    /* left: -105px; */
+    z-index: 820;
+    }
+</style>
+<div class="container-fluid container-fixed-lg">
+    <div class="row">
+        <div id="msg" class="col-sm-12">
+        </div>
+
+        <div class="col-md-12">
+            <!-- START PANEL -->
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <div style="height:20px"></div>
+                    <form role="form" id="frmaddcontact" method="post" action="@Url.Action("AddContact","Contacts")">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-group" id="divcompany" style="display:none;">
+                                    <div class="pops" id="msgcompany" style="visibility:hidden;"></div>
+                                    <div class="arrow-down" id="companyarrow" style="visibility:hidden;"></div>
+                                </div>
+                                <div class="form-group">
+                                   
+                                    <label>Company <b>*<img src="~/Content/Images/loading.gif" id="imgloader" style="visibility:hidden;padding-left:10px;" /></b> </label>
+                                    
+                                    <input type="text" class="form-control input-sm" name="company" id="company">
+                                </div>
+                                <div class="form-group" id="divcategory" style="display:none;">
+                                    <div class="pops" id="msgcategory" style="top:70px; visibility:hidden;"></div>
+                                    <div class="arrow-down" id="categoryarrow" style="top:103px; visibility:hidden;"></div>
+                                </div>
+                                <div class="form-group">
+                                    <label>Category <b>*</b></label>
+                                    <select class="full-width" data-init-plugin="select2" name="category" id="category">
+                                        <option> Select Category </option>
+                                        @{
+                                            if (categories != null)
+                                            {
+                                                foreach (var category in categories)
+                                                {
+
+                                                    <option value="@category.Id">@category.Name</option>
+
+                                                }
+                                            }
+                                        }
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>Contact Name</label>
+
+                                    <input type="text" name="contactname" id="contactname" class="form-control">
+                                </div>
+                                <div class="form-group">
+                                    <label>Phone Number</label>
+
+                                    <input type="number" name="phone" id="phone" class="form-control">
+                                </div>
+                                <div class="form-group">
+                                    <label>Email</label>
+
+                                    <input type="email" name="email" id="email" class="form-control">
+                                </div>
+                                <div class="form-group" id="divwebsite" style="display:none;">
+                                    <div class="pops" id="msgwebsite" style="top:348px;visibility:hidden;    left: 180px; "></div>
+                                    <div class="arrow-down" id="websitearrow" style="top:381px; visibility:hidden;"></div>
+                                </div>
+                                <div class="form-group">
+                                    <label>Website</label>
+
+                                    <input type="text" class="form-control" name="website" id="website">
+                                </div>
+                                <div class="form-group">
+                                    <label>Country</label>
+
+                                    <select class="full-width" onchange="print_state('region', this.selectedIndex);" data-init-plugin="select2" name="country" id="country">
+                                        <option> Select Country </option>
+
+                                    </select>
+
+                                    <script language="javascript">print_country("country");</script>
+
+                                </div>
+                                <div class="form-group">
+                                    <label>Region</label>
+                                    <select class="full-width" data-init-plugin="select2" name="region" id="region"></select>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+
+                                <div class="form-group">
+                                    <label for="name" class="control-label">Address 1</label>
+                                    <textarea class="form-control" style="height:105px;" name="addressline1" id="addressline1"></textarea>
+                                </div>
+                                <div class="form-group">
+                                    <label for="name" class="control-label">Address 2</label>
+
+                                    <textarea class="form-control" id="addressline2" name="addressline2" style="height:105px;"></textarea>
+
+                                </div>
+                                <div class="form-group">
+                                    <label>Town</label>
+                                    <input type="text" name="towncity" id="towncity" class="form-control">
+                                </div>
+                                <div class="form-group">
+                                    <label>Postal Code</label>
+
+                                    <input type="text" name="PostalCode" id="PostalCode" class="form-control">
+                                </div>
+                                <div class="form-group">
+                                    <label for="name" class="control-label">Notes</label>
+
+                                    <textarea class="form-control" id="notes" name="notes" style="height:105px;"></textarea>
+                                </div>
+
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    @if (genres != null)
+                                    {
+                                        <h4 style="margin-left:50px;margin-top:18px;">Genre</h4>
+                                    }
+                                    @{
+                                        if (genres != null)
+                                        {
+                                            foreach (var genre in genres)
+                                            {
+                                                <div class="checkbox check-info" style="margin-left:50px">
+                                                    <input type="checkbox" value="@genre.Id" id="@("checkbox" + genre.Id)" name="chkgenre">
+                                                    <label for="@("checkbox" + genre.Id)">@genre.Name</label>
+                                                </div>
+                                            }
+                                        }
+                                    }
+
+                                </div>
+                            </div>
+                        </div>
+                        <div style="height:20px"></div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <input id="Btnsaveandanother" class="btn btn-info btn-cons m-b-10" value="Save and Add Another" type="submit" />
+                                    <!-- Indicates a successful or positive action -->
+                                    <input id="Btnsaveandclose" class="btn btn-info btn-cons m-b-10" value="Save and close" type="submit" />
+                                    <!-- Contextual button for informational alert messages -->
+                                    <a href="@Url.Action("AllContacts","Contacts")" class="btn btn-danger btn-cons m-b-10">Cancel</a>
+                                    <input type="text" id="btnclick" name="btnclick" style="visibility:hidden;">
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <!-- END PANEL -->
+        </div>
+
+    </div>
+</div>
+@section Scripts{
+    <script src="~/Content/assets/js/notifications.js" type="text/javascript"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            var companyChecked = 0;
+            var arr = Array();
+            var indexs = Array();
+            var message = "";
+            var check = 0;
+            function messageMaker() {
+                if (arr.length != 0) {
+                    $('#Btnsaveandanother').attr('disabled', 'disabled');
+                    $('#Btnsaveandclose').attr('disabled', 'disabled');
+                }
+                else {
+                    $('#Btnsaveandanother').removeAttr('disabled');
+                    $('#Btnsaveandclose').removeAttr('disabled');
+                }
+            }
+            function displayCompanyMessage(message) {
+                $('#msgcompany').html(message);
+                $('#divcompany').css('display', 'block');
+                $('#companyarrow').css('visibility', 'visible');
+                $('#msgcompany').css('visibility', 'visible');
+            }
+            function displayWebsiteMessage(message) {
+                $('#msgwebsite').html(message);
+                $('#divwebsite').css('display', 'block');
+                $('#websitearrow').css('visibility', 'visible');
+                $('#msgwebsite').css('visibility', 'visible');
+            }
+            function displayCategoryMessage(message) {
+                $('#msgcategory').html(message);
+                $('#divcategory').css('display', 'block');
+                $('#categoryarrow').css('visibility', 'visible');
+                $('#msgcategory').css('visibility', 'visible');
+            }
+            function hideCompanyMessage(message) {
+                $('#msgcompany').html(message);
+                $('#divcompany').css('display', 'none');
+                $('#companyarrow').css('visibility', 'hidden');
+                $('#msgcompany').css('visibility', 'hidden');
+            }
+            function hideCategoryMessage(message) {
+                $('#msgcategory').html(message);
+                $('#divcategory').css('display', 'none');
+                $('#categoryarrow').css('visibility', 'hidden');
+                $('#msgcategory').css('visibility', 'hidden');
+            }
+            function hideWebsiteMessage(message) {
+                $('#msgwebsite').html(message);
+                $('#divwebsite').css('display', 'none');
+                $('#websitearrow').css('visibility', 'hidden');
+                $('#msgwebsite').css('visibility', 'hidden');
+            }
+            function insertIfNotExists(val) {
+                var index = arr.indexOf(val);
+
+                if (index == -1) {
+                    arr.push(val);
+                }
+            }
+            function removeIfExists(val) {
+                var index = arr.indexOf(val);
+
+                if (index > -1) {
+                    arr.splice(index, 1);
+                }
+            }
+            $('#company').keydown(function () {
+                hideCompanyMessage();
+            });
+            $('#company').blur(function () {
+                var company = $('#company').val();
+                if (company.length != 0) {
+                    checkcompany(company);
+                }
+
+            });
+            $('#category').change(function () {
+                if ($("#category option:selected").index() > 0) {
+                    removeIfExists('error');
+                    hideCategoryMessage('');
+                }
+                else {
+                    displayCategoryMessage('Please select category');
+                    insertIfNotExists('error');
+                }
+                messageMaker();
+            });
+            function checkcompany(company) {
+                $('#imgloader').css('visibility', 'visible');
+                $.getJSON("CheckCompanyExists/Contacts", { company: company }, function (data) {
+                    if (data != 0) {
+                        displayCompanyMessage('Company already exists!');
+                        insertIfNotExists('error');
+                    }
+                    else {
+                        hideCompanyMessage('');
+                        removeIfExists('error');
+                    }
+                    messageMaker();
+                    $('#imgloader').css('visibility', 'hidden');
+
+                });
+            }
+            $('#website').blur(function () {
+                var website = $('#website').val();
+                if (website.length != 0) {
+                    if (/^(www\.)[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$/.test(website)) {
+                        hideWebsiteMessage('');
+                        removeIfExists(message);
+                    }
+                    else {
+                        displayWebsiteMessage('Website not in proper format');
+                        insertIfNotExists(message);
+                    }
+                }
+                messageMaker();
+            });
+            $('#website').keydown(function () {
+                hideWebsiteMessage();
+            });
+            $('#Btnsaveandanother').click(function () {
+                var website = $('#website').val();
+                var company = $('#company').val();
+                $('#btnclick').val('Btnsaveandanother');
+                if (company.length == 0) {
+                    displayCompanyMessage('Please enter company');
+                    insertIfNotExists('error');
+                    if ($("#category option:selected").index() > 0) {
+                        hideCategoryMessage('');
+                        removeIfExists('error');
+                        return false;
+                    }
+                    else {
+                        displayCategoryMessage('Please select category');
+                        insertIfNotExists('error');
+                        return false;
+                    }
+                }
+                else {
+                    hideCompanyMessage('');
+                    removeIfExists('error');
+                    if ($("#category option:selected").index() > 0) {
+                        hideCategoryMessage('');
+                        removeIfExists('error');
+                    }
+                    else {
+                        displayCategoryMessage('Please select category');
+                        insertIfNotExists('error');
+                        return false;
+                    }
+                }
+                messageMaker();
+            });
+            $('#Btnsaveandclose').click(function () {
+                var website = $('#website').val();
+                var company = $('#company').val();
+                $('#btnclick').val('Btnsaveandclose');
+                if (company.length == 0) {
+                    displayCompanyMessage('Please enter company');
+                    insertIfNotExists('error');
+                    if ($("#category option:selected").index() > 0) {
+                        hideCategoryMessage('');
+                        removeIfExists('error');
+                        return false;
+                    }
+                    else {
+                        displayCategoryMessage('Please select category');
+                        insertIfNotExists('error');
+                        return false;
+                    }
+                }
+                else {
+                    hideCompanyMessage('');
+                    removeIfExists('error');
+                    if ($("#category option:selected").index() > 0) {
+                        hideCategoryMessage('');
+                        removeIfExists('error');
+                    }
+                    else {
+                        displayCategoryMessage('Please select category');
+                        insertIfNotExists('error');
+                        return false;
+                    }
+                }
+                messageMaker();
+            });
+
+            @*$('#BtnCancel').click(function () {
+                var addcontact = '@Url.Action("AllContacts", "Contacts")';
+                window.location.href = addcontact;
+            });*@
+
+        });
+</script>
+}

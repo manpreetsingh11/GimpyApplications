@@ -1,0 +1,369 @@
+﻿@{
+    ViewBag.Title = "AddContactToCampaign";
+    ViewBag.Heading = "Contact Details";
+    ViewBag.Module = "Contact";
+    ViewBag.SubModule = "Add Contact To Campaign";
+    Layout = "~/Views/Shared/_MainLayout.cshtml";
+    var categories = ViewBag.allcategory;
+    var allcompanies = ViewBag.allcompanies;
+    var addedcompanies = ViewBag.addedcompanies;
+    var genres = ViewBag.allgenres;
+    var searchData = ViewBag.searchData;
+    var countries = ViewBag.country;
+    //var Total = ViewBag.Total;
+    //var PageLength = ViewBag.PageLength;
+    //var TotalPages = ViewBag.TotalPages;
+    //var CurrentPage = ViewBag.CurrentPage;
+    //var CurrentAddedPage = ViewBag.CurrentAddedPage;
+    //var TotalAdded = ViewBag.TotalAdded;
+    //var TotalAddedPages = ViewBag.TotalAddedPages;
+    //var PageAdddedLength = ViewBag.PageAddedLength;
+    //var PageSize = Session["PageLength"].ToString();
+    //var campContactsCount = ViewBag.campContactsCount;
+}
+
+@section Styles {
+    <link href="@Url.Content("~/Content/assets/plugins/jquery-datatable/media/css/dataTables.bootstrap.min.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Content/assets/plugins/jquery-datatable/extensions/FixedColumns/css/dataTables.fixedColumns.min.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Content/assets/plugins/datatables-responsive/css/datatables.responsive.css")" rel="stylesheet" type="text/css" media="screen" />
+}
+
+<div class="container-fluid container-fixed-lg">
+    <div class="row">
+        <div class="col-md-12">
+            <!-- START PANEL -->
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <form role="form" id="frmaddcontact" method="post">
+                        <div class="row">
+                            <div style="height:60px"></div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label>Company</label>
+                                    <input type="text" class="form-control input-sm" name="company" required>
+                                </div>
+                                <div class="form-group">
+                                    <label>Country</label>
+
+                                    <select class="full-width" data-init-plugin="select2" name="country" id="country">
+                                        <option> Select Country </option>
+                                        @{
+                                            if (countries != null)
+                                            {
+                                                foreach (string countryy in countries)
+                                                {
+                                                    <option value="@countryy">@countryy</option>
+                                                }
+                                            }
+
+                                        }
+                                    </select>
+                                </div>
+
+                                <div class="form-group">
+                                    <label>Region</label>
+                                    <select class="full-width" data-init-plugin="select2" name="region" id="region">
+                                        <option> Select Region</option>
+                                    </select>
+
+                                </div><div style="height:20px"></div>
+                                <div class="form-group">
+                                    <input class="btn btn-info btn-cons m-b-10" value="Search" type="submit" />
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                @if (categories != null)
+                                {
+                                    <h4 style="margin-left:50px;">Category</h4>
+
+                                }
+                                <div class="form-group">
+                                    @{
+                                        if (categories != null)
+                                        {
+                                            foreach (var category in categories)
+                                            {
+                                                <div class="checkbox check-info" style="margin-left:50px">
+                                                    <input type="checkbox" class="chkcat" value="@category.Id" id="@("checkbox" + category.Id)" name="chkgenre">
+                                                    <label for="@("checkbox" + category.Id)">@category.Name</label>
+                                                </div>
+                                            }
+                                        }
+                                    }
+                                </div>
+
+                            </div>
+                            <div class="col-md-4">
+                                @if (genres != null)
+                                {
+                                    <h4 style="margin-left:50px">Genre</h4>
+                                }
+                                <div class="form-group">
+                                    @{
+                                        if (genres != null)
+                                        {
+                                            foreach (var genre in genres)
+                                            {
+                                                <div class="checkbox check-info" style="margin-left:50px">
+                                                    <input type="checkbox" class="chkgen" value="@genre.genreid" id="@("checkbox" + genre.genreid)" name="chkgenre">
+                                                    <label for="@("checkbox" + genre.genreid)">@genre.genre</label>
+                                                </div>
+                                            }
+                                        }
+                                    }
+
+                                </div>
+                            </div>
+                        </div>
+                        <br />
+                        <div style="padding:10px;border:1px solid rgba(0, 0, 0, 0.20)">
+                            <div class="form-group">
+                                <div class="checkbox check-info" style="margin-left:50px">
+                                    <input type="checkbox" class="chkall" id="chkall" name="chkall">
+                                    <label style="color:#626262">Select All</label>
+                                </div>
+                            </div>
+
+                            <table class="table table-hover demo-table-dynamic" id="tableWithDynamicRows">
+                                <thead style="background-color: rgb(59, 71, 82);">
+                                    <tr>
+                                        <th class="sorting_asc_disabled sorting_desc_disabled" style="width:6%;cursor:pointer;"></th>
+                                        <th style="width:32%;cursor:pointer;">Company</th>
+                                        <th style="width:30%;cursor:pointer;">Category</th>
+                                        <th style="width:30%;cursor:pointer;">Genre</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @{
+                                        if (allcompanies.Count != 0)
+                                        {
+                                            foreach (var item in allcompanies)
+                                            {
+                                    <tr class="rows" style="cursor:pointer;">
+                                        <td style="padding-left: 10px;" class="tdid">
+                                            <div class="checkbox check-info">
+                                                <input type="checkbox" value="@item.id" id="@("checkbox" + @item.id)" class="chkall" name="chkall">
+                                                <label for="@("checkbox" + @item.id)"></label>
+                                            </div>
+                                        </td>
+                                        <td>@item.name</td>
+                                        <td>@item.Category</td>
+                                        <td>@item.genre</td>
+                                    </tr>
+                                            }
+                                        }
+                                        else
+                                        {
+
+                                        }
+                                    }
+
+                                </tbody>
+
+                            </table>
+                        </div><br />
+
+
+                        <center><input class="btn btn-info btn-cons m-b-10" id="AddSelected" disabled value="Add Selected contact to campaign" type="button" /></center>
+                        <div style="height:40px"></div>
+
+
+                        <div style="padding:10px;border:1px solid rgba(0, 0, 0, 0.20)">
+                            <div class="form-group">
+                                <div class="checkbox check-info" style="margin-left:50px">
+                                    <input type="checkbox" class="chkall1" id="chkselect1" name="chkall1">
+                                    <label style="color:#626262">Select All</label>
+                                </div>
+                            </div>
+                            <table class="table table-hover demo-table-dynamic" id="tableWithDynamicRows1">
+                                <thead style="background-color: rgb(59, 71, 82);">
+                                    <tr>
+                                        <th class="sorting_asc_disabled sorting_desc_disabled" style="width:6%;cursor:pointer;"></th>
+                                        <th style="width:32%;cursor:pointer;">Company</th>
+                                        <th style="width:30%;cursor:pointer;">Category</th>
+                                        <th style="width:30%;cursor:pointer;">Genre</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @{
+                                        if (addedcompanies.Count != 0)
+                                        {
+                                            foreach (var item in addedcompanies)
+                                            {
+                                                <tr class="rows" style="cursor:pointer;">
+                                                    <td style="padding-left: 10px;" class="tdid">
+                                                        <div class="checkbox check-info">
+                                                            <input type="checkbox" value="@item.id" id="@("checkbox" + @item.id)"  name="chkall1" class="chkall1">
+                                                            <label for="@("checkbox" + @item.id)"></label>
+                                                        </div>
+                                                    </td>
+                                                    <td>@item.name</td>
+                                                    <td>@item.Category</td>
+                                                    <td>@item.genre</td>
+                                                </tr>
+                                            }
+                                        }
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                        <center>
+                            <input class="btn btn-info btn-cons m-b-10" id="RemoveSelected" disabled value="Remove Selected contact to campaign" type="button" /><br />
+                            <input class="btn btn-info btn-cons m-b-10" id="ReturnToCampaign" value="Return to campaign" type="button" />
+                        </center>
+                        
+                    </form>
+                </div>
+            </div>
+            <!-- END PANEL -->
+        </div>
+    </div>
+</div>
+@section Scripts {
+    <script src="@Url.Content("~/Content/assets/plugins/jquery-datatable/media/js/jquery.dataTables.min.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/assets/plugins/jquery-datatable/extensions/TableTools/js/dataTables.tableTools.min.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/assets/plugins/jquery-datatable/media/js/dataTables.bootstrap.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/assets/plugins/jquery-datatable/extensions/Bootstrap/jquery-datatable-bootstrap.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/assets/plugins/datatables-responsive/js/datatables.responsive.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/assets/plugins/datatables-responsive/js/lodash.min.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/assets/js/datatables.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/assets/js/scripts.js")" type="text/javascript"></script>
+
+
+    <script>
+
+        $(document).ready(function () {
+
+            $('.chkall').change(function () {
+
+                var checkCount = 0;
+                var totalCheck = $('input[type="checkbox"][class="chkall"]').length;
+
+                $('input[type="checkbox"][class="chkall"]').each(function () {
+                    if ($(this).is(":checked")) {
+                        checkCount++;
+                    }
+                });
+
+                if (checkCount == 0) {
+                    $('#AddSelected').css("cursor", "default");
+                    $('#AddSelected').attr("disabled", "disabled");
+                    $('input[type="checkbox"][id="chkselect"]').removeAttr('checked');
+                }
+                else if (checkCount < totalCheck) {
+                    $('#AddSelected').css("cursor", "hand");
+                    $('#AddSelected').removeAttr("disabled");
+                    $('input[type="checkbox"][id="chkselect"]').removeAttr('checked');
+                }
+                else {
+                    $('input[type="checkbox"][id="chkselect"]').prop("checked", "checked");
+                    $('#AddSelected').css("cursor", "hand");
+                    $('#AddSelected').removeAttr("disabled");
+                }
+            });
+
+
+            $('#AddSelected').click(function () {
+
+                var selectedCompanies = "";
+
+                $('input[type="checkbox"][class="chkall"]').each(function () {
+                    if ($(this).is(":checked")) {
+                        selectedCompanies = selectedCompanies + $(this).val() + ",";
+                    }
+                });
+
+                $.getJSON('AddContact/Campaign', { companyIDs: selectedCompanies }, function (data) {
+                    if (data != null) {
+                        var allcomp = '@Url.Action("AddContactToCampaign", "Campaign")';
+                        window.location.href = allcomp;
+                        location.reload(true);
+                    }
+                });
+
+            });
+
+
+
+            $('.chkall1').change(function () {
+
+                var checkCount = 0;
+                var totalCheck = $('input[type="checkbox"][class="chkall1"]').length;
+
+                $('input[type="checkbox"][class="chkall1"]').each(function () {
+                    if ($(this).is(":checked")) {
+                        checkCount++;
+                    }
+                });
+
+                if (checkCount == 0) {
+                    $('#RemoveSelected').css("cursor", "default");
+                    $('#RemoveSelected').attr("disabled", "disabled");
+                    $('input[type="checkbox"][id="chkselect1"]').removeAttr('checked');
+                }
+                else if (checkCount < totalCheck) {
+                    $('#RemoveSelected').css("cursor", "hand");
+                    $('#RemoveSelected').removeAttr("disabled");
+                    $('input[type="checkbox"][id="chkselect1"]').removeAttr('checked');
+                }
+                else {
+                    $('input[type="checkbox"][id="chkselect1"]').prop("checked", "checked");
+                    $('#RemoveSelected').css("cursor", "hand");
+                    $('#RemoveSelected').removeAttr("disabled");
+                }
+            });
+
+            $('#RemoveSelected').click(function () {
+                alert('hello');
+                var selectedCompanies = "";
+
+                $('input[type="checkbox"][class="chkall1"]').each(function () {
+                    if ($(this).is(":checked")) {
+                        selectedCompanies = selectedCompanies + $(this).val() + ",";
+                    }
+                });
+
+                $.getJSON('DeleteContact/Campaign', { companyIDs: selectedCompanies }, function (data) {
+                    if (data != null) {
+                        var allcomp = '@Url.Action("AddContactToCampaign", "Campaign")';
+                        window.location.href = allcomp;
+                        location.reload(true);
+                    }
+                });
+
+            });
+
+            $('#ReturnToCampaign').click(function () {
+
+                var addContactToCampaign = '@Url.Action("AllCampaigns", "Campaign")';
+                window.location.href = addContactToCampaign;
+
+            });
+
+
+            $('#country').change(function () {
+                alert('cou');
+                var country = $('#country').val();
+                check = 0;
+                $('#region').empty();
+                if (country != ' Select Country ') {
+                    alert(country);
+                    $.getJSON("GetRegion/Campaign", { country: country }, function (result) {
+                        if (result != null) {
+                            $('#region').empty();
+                            $('#region').append('<option> Select Region</option>');
+                            $.each(result, function (value, item) {
+                                $('#region').append('<option value="' + item + '">' + item + '</option>');
+                            })
+                            $('#region option').eq(0).prop('selected', true);
+                        }
+                    });
+                }
+
+            });
+
+        });
+    </script>
+}
+
+

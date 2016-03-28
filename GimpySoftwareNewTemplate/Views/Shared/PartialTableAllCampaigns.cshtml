@@ -1,0 +1,126 @@
+﻿@{
+    var status = "-1";
+    if (Request.Url.Query.Contains("status"))
+    {
+        status = Request.QueryString["status"];
+    }
+    else if (Session["status"] != null)
+    {
+        status = Session["status"].ToString();
+    }
+    var campaigns = ViewBag.allcampaign;
+}
+
+
+
+<table class="table table-hover demo-table-dynamic" id="tableWithDynamicRows">
+    <thead style="background-color: rgb(59, 71, 82);">
+        <tr>
+            <th class="sorting_asc_disabled sorting_desc_disabled" style="width:3%;cursor:pointer;"></th>
+            <th style="width:30%;cursor:pointer;">Name</th>
+            <th style="width:60%;cursor:pointer;">Description</th>
+            <th style="width:7%;cursor:pointer;">Active</th>
+        </tr>
+    </thead>
+    <tbody>
+
+        @{
+            if (campaigns!=null)
+            {
+                foreach (var campaign in campaigns)
+                {
+
+                    if (campaign.Active != true)
+                    {
+                        <tr style="background-color:lightgray; color:maroon; cursor:pointer;" class="rows">
+
+                            <td style="padding-left: 10px;" class="tdid">
+                                <div class="checkbox check-info">
+                                    <input type="checkbox" value="@campaign.Id" id="@("checkbox" + campaign.Id)" class="chkall" name="chkall">
+                                    <label for="@("checkbox" + campaign.Id)"></label>
+                                </div>
+                            </td>
+                            <td class="v-align-middle"><p>@campaign.Name</p></td>
+                            <td class="v-align-middle"><p>@campaign.Description</p></td>
+                            <td class="v-align-middle">
+                                @{
+                        if (campaign.Active)
+                        {
+                            <p>Yes</p>
+                        }
+                        else
+                        {
+                            <p>No</p>
+
+                        }
+                                }
+                            </td>
+
+                        </tr>
+                    }
+                    else
+                    {
+                        <tr class="rows" style="cursor:pointer;">
+                            <td style="padding-left: 10px;" class="tdid">
+                                <div class="checkbox check-info">
+                                    <input type="checkbox" value="@campaign.Id" id="@("checkbox" + campaign.Id)" class="chkall" name="chkall">
+                                    <label for="@("checkbox" + campaign.Id)"></label>
+                                </div>
+                            </td>
+                            <td class="v-align-middle"><p>@campaign.Name</p></td>
+                            <td class="v-align-middle"><p>@campaign.Description</p></td>
+                            <td class="v-align-middle">
+                                @{
+                        if (campaign.Active)
+                        {
+                            <p>Yes</p>
+                        }
+                        else
+                        {
+                            <p>No</p>
+
+                        }
+                                }
+                            </td>
+                        </tr>
+                    }
+
+
+                }
+            }
+            else
+            {
+
+                <tr>
+                    <td colspan="5" style="background-color:darkslategrey;text-align:center; padding-top:2px;">
+                        <hr />
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="5" style="background-color:darkslategrey;text-align:center; padding-top:2px;">
+                        @{
+                if (ViewBag.status == "inactive")
+                {
+                    <h3>No record found</h3>
+                }
+                else if (ViewBag.finddata == "no")
+                {
+                    <h3>No record found</h3>
+
+                }
+                else
+                {
+                    <h3>No Campaign have been added</h3>
+
+                }
+                        }
+                        <br />
+                    </td>
+
+                </tr>
+
+            }
+
+        }
+    </tbody>
+</table>

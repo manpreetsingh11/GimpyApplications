@@ -1,0 +1,197 @@
+﻿
+@{
+    ViewBag.Title = "AddCampaign";
+    ViewBag.Heading = "Campaign";
+    ViewBag.Module = "Campaign";
+    ViewBag.SubModule = "Add Campaign";
+    Layout = "~/Views/Shared/_MainLayout.cshtml";
+}
+<style>
+    /*.form-group-default has-error:focus {
+        border: 1px solid black;
+    }*/
+
+    .pops {
+        border: 1px solid #DD3636;
+        box-shadow: 0 0 9px rgba(191, 191, 191, 0.36);
+        z-index: 800;
+        position: absolute;
+        background-color: #DD3636;
+        padding: 5px;
+        font-family: 'helvetica neue';
+        font-size: 14px;
+        font-weight: 400;
+        line-height: 1.42857143;
+        max-width: 276px;
+        border-radius: 6px;
+        color: white;
+        left: -5px;
+        top:27px;
+        /*visibility: hidden;*/
+    }
+
+    .arrow-down {
+        width: 0;
+        height: 0;
+        position: absolute;
+        border-top: 8px solid transparent;
+        border-bottom: 8px solid transparent;
+        border-right: 10px solid #DD3636;
+        left: -14px;
+        top: 35px;
+        /*left:-105px;*/
+        z-index: 820;
+        /*visibility: hidden;*/
+    }
+</style>
+<div class="container-fluid container-fixed-lg">
+    <div class="row">
+        <div class="col-md-8">
+            <!-- START PANEL -->
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <form role="form" id="frmaddcontact" method="post" action="@Url.Action("AddCampaign","Campaign")">
+                        <div class="col-md-12">
+
+                            <div class="row">
+                                <div class="col-md-7">
+                                    <div class="form-group">
+                                        <label>Name <b>*<img src="~/Content/Images/loading.gif" id="imgloader" style="visibility:hidden;padding-left:10px;" /></b> </label>
+                                        <input type="text" class="form-control input-sm" name="name" id="name" required>
+                                    </div>
+                                </div>
+                                <div class="col-md-5">
+                                    <div class="form-group" id="divcampaign" style="display:none;">
+                                        <div class="pops" id="msgcampaign"></div>
+                                        <div class="arrow-down" id="campaignarrow"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-7">
+                                    <div class="form-group">
+                                        <label for="name" class="control-label">Description</label>
+                                        <textarea class="form-control" style="height:106px;" id="description" name="description"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                                
+                            <div style="height:20px"></div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <input class="btn btn-info btn-cons m-b-10" value="Save and Add Another" id="Btnsaveandanother" type="submit" />
+                                    <!-- Indicates a successful or positive action -->
+                                    <input class="btn btn-info btn-cons m-b-10" value="Save and close" id="Btnsaveandclose" type="submit" />
+                                    <!-- Contextual button for informational alert messages -->
+                                    <a href="@Url.Action("AllCampaigns","Campaign")" class="btn btn-danger btn-cons m-b-10">Cancel</a>
+                                    <input type="text" id="btnclick" name="btnclick" style="visibility:hidden;">
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <!-- END PANEL -->
+        </div>
+
+    </div>
+</div>
+
+@section Scripts{
+    <script type="text/javascript">
+    $(document).ready(function () {
+        var check = 0;
+        
+        function displayCampaignMessage(message) {
+            $('#msgcampaign').html(message);
+            $('#divcampaign').css('display', 'block');
+            $('#campaignarrow').css('visibility', 'visible');
+            $('#msgcampaign').css('visibility', 'visible');
+        }
+
+        function hideCampaignMessage(message) {
+            $('#msgcampaign').html(message);
+            $('#divcampaign').css('display', 'none');
+            $('#campaignarrow').css('visibility', 'hidden');
+            $('#msgcampaign').css('visibility', 'hidden');
+        }
+
+        $('#name').blur(function () {
+            var name = $('#name').val();
+            if (name.length != 0) {
+                checkcampaign(name);
+            }
+        });
+
+        function checkcampaign(name) {
+            $('#imgloader').css('visibility', 'visible');
+            $.getJSON("CheckCampaignExists/Compaign", { name: name }, function (data) {
+                if (data != 0) {
+                    displayCampaignMessage('Campaign already exists!');
+                    //$('#errormsg').text('Campaign already exists');
+                    //$('#errormsg').css('visibility', 'visible');
+                    $('#Btnsaveandanother').attr('disabled', 'disabled');
+                    $('#Btnsaveandclose').attr('disabled', 'disabled');
+                    return false;
+                }
+                else {
+                    hideCampaignMessage('');
+                    removeIfExists('error');
+                    
+                    //$('#errormsg').css('visibility', 'hidden');
+                    $('#Btnsaveandanother').removeAttr('disabled');
+                    $('#Btnsaveandclose').removeAttr('disabled');
+                    alert('disable');
+                }
+                messageMaker();
+                $('#imgloader').css('display', 'none');
+            });
+        }
+
+        $('#Btnsaveandanother').click(function () {
+            var name = $('#name').val();
+            $('#btnclick').val('Btnsaveandanother');
+            
+            if (name.length == 0) {
+                displayCampaignMessage('Please enter name');
+                insertIfNotExists('error');
+                //$('#errormsg').text('Please enter name');
+                //$('#errormsg').css('visibility', 'visible');
+                return false;
+            }
+            else{
+                hideCampaignMessage('');
+                removeIfExists('error');
+            }
+            messageMaker();
+        });
+
+
+        $('#Btnsaveandclose').click(function () {
+            var name = $('#name').val();
+            $('#btnclick').val('Btnsaveandclose');
+            
+            if (name.length == 0) {
+                displayCompanyMessage('Please enter company');
+                insertIfNotExists('error');
+                //$('#errormsg').text('Please enter name');
+                //$('#errormsg').css('visibility', 'visible');
+                return false;
+            }
+            else {
+                hideCompanyMessage('');
+                removeIfExists('error');
+            }
+            messageMaker();
+        });
+
+        $('#BtnCancel').click(function () {
+            var addCampaign = '@Url.Action("AllCampaigns", "Campaign")';
+            window.location.href = addCampaign;
+        });
+    });
+</script>
+    }
+

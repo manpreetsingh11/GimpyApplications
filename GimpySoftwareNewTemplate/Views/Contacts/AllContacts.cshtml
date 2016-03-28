@@ -1,0 +1,447 @@
+﻿@{
+    ViewBag.Title = "AllContacts";
+    ViewBag.Heading = "Contact Details";
+    ViewBag.Module = "Contact";
+    ViewBag.SubModule = "Add Contact";
+    Layout = "~/Views/Shared/_MainLayout.cshtml";
+    var genres = ViewBag.genres;
+    var categories = ViewBag.categories;
+    var countries = ViewBag.country;
+    var companies = ViewBag.allcompanies;
+    var status = "-1";
+    if (Request.Url.Query.Contains("status"))
+    {
+        status = Request.QueryString["status"];
+    }
+    else if (Session["status"] != null)
+    {
+        status = Session["status"].ToString();
+    }
+    var searchcompany = ViewBag.searchcompany;
+    var chkcategories = ViewBag.chkcategories;
+    var chkgenres = ViewBag.chkgenres;
+}
+@section Styles {
+    <link href="@Url.Content("~/Content/assets/plugins/jquery-datatable/media/css/dataTables.bootstrap.min.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Content/assets/plugins/jquery-datatable/extensions/FixedColumns/css/dataTables.fixedColumns.min.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Content/assets/plugins/datatables-responsive/css/datatables.responsive.css")" rel="stylesheet" type="text/css" media="screen" />
+
+}
+<div class="container-fluid container-fixed-lg">
+    <div class="row">
+        <div class="col-md-12">
+            <!-- START PANEL -->
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <form role="form" id="frmaddcontact" method="post">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <h3></h3>
+                                <div style="height:20px"></div>
+                                <div class="form-group">
+                                    <label>Company</label>
+                                    <input type="text" class="form-control input-sm" value="@((searchcompany!=null)?searchcompany:"")" name="company" id="company">
+                                </div>
+                                <div class="form-group">
+                                    <label>Country</label>
+
+                                    <select class="full-width" data-init-plugin="select2" name="country" id="country">
+                                        <option>Select Country</option>
+                                        @{
+                                            if (countries != null)
+                                            {
+                                                foreach (string countryy in countries)
+                                                {
+
+                                                    <option value="@countryy">@countryy</option>
+                                                }
+                                            }
+
+                                        }
+                                    </select>
+                                </div>
+
+                                <div class="form-group">
+                                    <label>Region</label>
+                                    <select class="full-width" data-init-plugin="select2" name="region" id="region">
+                                        <option>Select Region</option>
+                                    </select>
+
+                                </div>
+                                <div style="height:20px"></div>
+                                <div class="form-group">
+                                    <input class="btn btn-info btn-cons m-b-10" value="Search" type="submit" />
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                @if (categories != null)
+                                {
+                                    <h4 style="margin-left:50px;margin-top:30px;">Category</h4>
+                                }
+
+                                <div class="form-group">
+                                    @{
+                                        if (categories != null)
+                                        {
+                                            foreach (var category in categories)
+                                            {
+                                                if (chkcategories != null)
+                                                {
+                                                    foreach (var chkcat in chkcategories)
+                                                    {
+                                                            <div class="checkbox check-info" style="margin-left:50px">
+                                                                <input type="checkbox" class="chkcat" value="@category.Id" @((category.Id == chkcat) ? "checked" : "") id="@("checkbox" + category.Id)" name="chkcat">
+                                                                <label for="@("checkbox" + category.Id)">@category.name</label>
+                                                            </div>
+                                                        break;
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    <div class="checkbox check-info" style="margin-left:50px">
+                                                        <input type="checkbox" class="chkcat" value="@category.Id" id="@("checkbox" + category.Id)" name="chkcat">
+                                                        <label for="@("checkbox" + category.Id)">@category.name</label>
+                                                    </div>
+                                                }
+                                            }
+                                        }
+                                    }
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                @if (genres != null)
+                                {
+                                    <h4 style="margin-left:50px;margin-top:30px;">Genre</h4>
+                                }
+                                <div class="form-group">
+                                    @{
+                                        if (genres != null)
+                                        {
+                                            foreach (var genre in genres)
+                                            {
+                                                if (chkgenres != null)
+                                                {
+                                                    foreach (var chkgen in chkgenres)
+                                                    {
+                                                        <div class="checkbox check-info" style="margin-left:50px">
+                                                            <input type="checkbox" class="chkgen" @((genre.genreid == chkgen) ? "checked" : "") value="@genre.genreid" id="@("checkbox" + genre.genreid)" name="chkgen">
+                                                            <label for="@("checkbox" + genre.genreid)">@genre.genre</label>
+                                                        </div>
+                                                        break;
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    <div class="checkbox check-info" style="margin-left:50px">
+                                                        <input type="checkbox" value="@genre.genreid" id="@("checkbox" + genre.genreid)" name="chkgen">
+                                                        <label for="@("checkbox" + genre.genreid)">@genre.genre</label>
+                                                    </div>
+                                                }
+
+                                            }
+                                        }
+                                    }
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="panel-heading">
+                                <div class="pull-left">
+                                    <h3>
+                                        My Contacts
+                                    </h3>
+                                </div>
+                                <div class="pull-right">
+                                    <div class="col-xs-12">
+                                        <button id="show-modal" class="btn btn-info btn-danger">
+                                            <i class="fa fa-minus"></i> Delete
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="pull-right">
+                                    <div class="col-xs-12">
+                                        <button id="show-modal" class="btn btn-info btn-cons">
+                                            <i class="fs-14 pg-download"></i> Import Contact
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="pull-right">
+                                    <div class="col-xs-12">
+                                        <a id="addconact" href="@Url.Action("AddContact","Contacts")" class="btn btn-info btn-cons">
+                                            <i class="fa fa-plus"></i> Add Contact
+                                        </a>
+                                    </div>
+                                </div>
+                                <div class="pull-right" style="margin-right:15px">
+                                    <div class="col-sm-12">
+                                        <input type="checkbox" name="chkactives" id="chkactive" @((status == "inactive") ? "checked" : "") data-init-plugin="switchery" style="background-color:#ff0000" data-size="medium" />
+                                        <label style="padding:7px; font-size:11px"><b>INACTIVE</b></label>
+                                    </div>
+                                </div>
+                                <div class="clearfix"></div>
+                            </div><br />
+                            <div style="padding:10px;border:1px solid rgba(0, 0, 0, 0.20)">
+
+                                <div class="">
+                                    @*<div class="pull-left">
+
+                                        </div>*@
+                                    <div class="checkbox check-info">
+                                        <input type="checkbox" name="chkselectall" id="chkselectall">
+                                        <label for="chkselectall">Select All</label>
+                                    </div>
+                           
+
+                                    <div class="clearfix"></div>
+                                </div>
+
+                                @Html.Partial("PartialTableAllContacts")
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <!-- END PANEL -->
+        </div>
+
+    </div>
+</div>
+
+@section Scripts {
+    <script type="text/javascript" src="@Url.Content("~/Content/js/countries.js")"></script>
+    <script src="@Url.Content("~/Content/assets/plugins/jquery-datatable/media/js/jquery.dataTables.min.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/assets/plugins/jquery-datatable/extensions/TableTools/js/dataTables.tableTools.min.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/assets/plugins/jquery-datatable/media/js/dataTables.bootstrap.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/assets/plugins/jquery-datatable/extensions/Bootstrap/jquery-datatable-bootstrap.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/assets/plugins/datatables-responsive/js/datatables.responsive.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/assets/js/datatables.js")" type="text/javascript"></script>
+  
+      <script>
+        $(document).ready(function () {
+            var allrecords = "";
+            var checkboxClicked = false;
+            var searchstatus = "";
+            var currPage = "";
+            var sortby = "";
+            var sorttype = "";
+            var x = "", y = "", height = "", heights = "", width = "", widths = "";
+
+            $('#chkselectall').change(function () {
+               $('input[type="checkbox"][class^="chkall"]').prop("checked", $(this).prop("checked"));
+            });
+
+            $('.chkall').change(function () {
+                var checkCount = 0;
+                var totalCheck = $('input[type="checkbox"][class="chkall"]').length;
+
+                $('input[type="checkbox"][class="chkall"]').each(function () {
+                    if ($(this).is(":checked")) {
+                        checkCount++;
+                    }
+                });
+
+                if (checkCount < totalCheck) {
+                    $('input[type="checkbox"][id="chkselect"]').removeAttr('checked');
+                }
+                else {
+                    $('input[type="checkbox"][id="chkselect"]').prop("checked", "checked");
+                }
+
+            });
+
+
+            $('#tableWithDynamicRows').DataTable({
+                bDestroy: true,
+            });
+
+            $('.chkall').click(function () {
+                return false;
+            });
+
+       
+            $('#country').change(function () {
+                var country = $('#country').val();
+                check = 0;
+                $('#region').empty();
+                if (country != ' Select Country ') {
+                    $.getJSON("GetRegion/Contacts", { country: country }, function (result) {
+                        if (result != null) {
+                            $('#region').empty();
+                            $('#region').append('<option> Select Region</option>');
+                            $.each(result, function (value, item) {
+                                $('#region').append('<option value="' + item + '">' + item + '</option>');
+                            })
+                            $('#region option').eq(0).prop('selected', true);
+                        }
+                    });
+                }
+
+            });
+
+            $('.tdedit').click(function () {
+                var url = $(this).attr('href');
+                var width = window.innerWidth - 100;
+                $.colorbox({
+                    href: url,
+                    iframe: true,
+                    height: 600,
+                    width: width,
+                    onClosed: function () {
+                        getresult();
+                    },
+                    transition: "none",
+                    fadeOut: 0
+                });
+                return false;
+            });
+
+            $('#tableWithDynamicRows tbody').on('click', 'tr', function () {
+                if (!checkboxClicked) {
+                    cid = $(this).find("td.tdid input").val();
+                    var url = "ContactDetail?cid=" + cid;
+                   // var col = $(this).parent().children().index($(this).parent());
+                    //alert('Col:' + col);
+                   // var width = window.innerWidth - 100;
+                    //$('table td:not(:first-child, :last-child)')
+                   // $.colorbox({ href: url, iframe: true, height: 500, width: width });
+                }
+                else {
+                    checkboxClicked = false;
+                }
+            });
+
+            $("#tblcompany ").delegate("tr.rows", "click", function () {
+                if (!checkboxClicked) {
+                    cid = $(this).find("td.tdid input").val();
+                    var url = "CompanyDetail/Contacts?cid=" + cid;
+                    var width = window.innerWidth - 200;
+                    $.colorbox({ href: url, iframe: true, height: 500, width: width });
+                }
+                else {
+                    checkboxClicked = false;
+                }
+            });
+
+            $('#chkactive').change(function () {
+                var checked = $('#chkactive').attr('checked');
+                var chkstatus = 'inactive'; //(checked) ? 'inactive' : 'active';
+                alert(chkstatus);
+                $.getJSON('GetInactiveResult/Contacts', { status: chkstatus }, function (result) {
+                    if (result != null) {
+                        alert(result);
+                        var dataSet = $.parseJSON(result);
+                        alert(dataSet);
+                        var finalurl;
+                        $.each(result, function (index, item) {
+                            alert(item);
+                        });
+                    }
+                    else {
+
+                    }
+
+                });
+
+                @*if ('@Session["status"]' != '@null') {
+                    if ('@Session["status"].ToString()' == 'inactive' || '@Session["status"].ToString()' == "") {
+                        var path = '@Url.Action("AllContacts", "Contacts", new { status = "inactive" })'
+                        window.location.href = path;
+
+                    }
+                    else {
+                        var path = '@Url.Action("AllContacts", "Contacts", new { status = "active" })'
+                        window.location.href = path;
+                    }
+                }
+                else {
+                    var path = '@Url.Action("AllContacts", "Contacts", new { status = "inactive" })'
+                    window.location.href = path;
+                }*@
+
+            });
+
+
+            $('#droppaging').change(function () {
+                getresult();
+            });
+
+            function getresult() {
+                var checked = $('#chkactive').attr('checked');
+                var pagesize = $('#droppaging').val();
+                var serachname = $('#company').val();
+                var country = $('#country').val();
+                var region = $('#region').val();
+                var category = "", genres = "";
+                var allcomp = "";
+                var chkstatus = "";
+                var row = "";
+                var finalurl = "";
+
+                $('.chkcate').each(function (index, element) {
+
+                    if ($(this).is(":checked")) {
+                        category += $(this).val() + ',';
+                    }
+                });
+                $('.chkgene').each(function (index, element) {
+
+                    if ($(this).is(":checked")) {
+                        genres += $(this).val() + ',';
+                    }
+                });
+                chkstatus = (checked) ? 'inactive' : 'active';
+
+
+                $.getJSON('GetInactiveResult/Contacts', { status: chkstatus, pagesize: pagesize, CurrentPage: currPage, sortby: sortby, sorttype: sorttype, allrecords: allrecords, serachname: serachname, country: country, region: region, category: category, genres: genres, searchstatus: searchstatus }, function (result) {
+                    if (result != null) {
+                        row = "[";
+                        $.each(result.recordset, function (index, item) {
+                            finalurl = 'EditCompany?ID=' + item['id'];
+                            row += "[" + "'" + item['id'] + "','" + item['name'] + "','" + item['Category'] + "','" + item['email'] + "','" + finalurl + "'],";
+                        });
+                        row = row.slice(0, -1);
+                        row += "];";
+                        //$('#tableWithDynamicRows').DataTable({
+                        //    data: row,
+                        //    bServerSide: true,
+                        //    bDestroy: true,
+                        //    columns: [
+                        //        { title: "" },
+                        //        { title: "Company" },
+                        //        { title: "Category" },
+                        //        { title: "email" },
+                        //        { title: "" }
+                        //    ]
+                        //});
+                        $('.tdedit').click(function () {
+                            var url = $(this).attr('href');
+                            var width = window.innerWidth - 100;
+                            $.colorbox({
+                                href: url,
+                                iframe: true,
+                                height: 600,
+                                width: width,
+                                onClosed: function () {
+
+                                    getresult();
+
+                                },
+                                transition: "none",
+                                fadeOut: 0
+                            });
+                            return false;
+                        });
+                    }
+                    else {
+
+                    }
+
+                });
+            };
+
+        });
+    </script>
+}
+
+

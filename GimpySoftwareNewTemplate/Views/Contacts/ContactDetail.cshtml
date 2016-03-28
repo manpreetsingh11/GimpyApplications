@@ -1,0 +1,132 @@
+﻿@{
+    Layout = "~/Views/Shared/_LayoutPopUp.cshtml";
+    ViewBag.Title = "ContactDetail";
+    ViewBag.Heading = "Contact";
+    var ContactDetail = ViewBag.result;
+}
+
+@{
+    foreach (var Contact in ContactDetail)
+    {
+
+        <div class="container-fluid container-fixed-lg">
+            <div class="row">
+                <div class="col-md-12">
+                    <!-- START PANEL -->
+                    <div class="panel panel-default">
+                        <div class="panel-body">
+                            <h3>Contact Details</h3>
+                            <form role="form" id="frmaddcontact" action="@Url.Action("ContactDetail","Contact")">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label>Company</label><br />
+                                            <label style="color:black;">@Contact.name</label>
+
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Category</label><br />
+                                            <label style="color:black;">@Contact.Category</label>
+
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Contact Name</label><br />
+                                            <label style="color:black;">@Contact.contactname</label>
+
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Phone Number</label><br />
+                                            <label style="color:black;">@Contact.phonenumber</label>
+
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Email</label><br />
+                                            <label style="color:black;">@Contact.email</label>
+
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Website</label><br />
+                                            <label style="color:black;">@Contact.website</label>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Country</label><br />
+                                            <label style="color:black;">@Contact.country</label>
+
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Region</label><br />
+                                            <label style="color:black;">@Contact.region</label>
+
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+
+                                        <div class="form-group">
+                                            <label>Address 1</label><br />
+                                            <label style="color:black;">@Contact.addressline1</label>
+
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Address 2</label><br />
+                                            <label style="color:black;">@Contact.addressline2</label>
+
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Town</label><br />
+                                            <label style="color:black;">@Contact.towncity</label>
+
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Postal Code/Zip</label><br />
+                                            <label style="color:black;">@Contact.postcode</label>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Notes</label><br />
+                                            <label style="color:black;">@Contact.notes</label>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Genres</label><br />
+                                            <label style="color:black;">@ViewBag.genres</label>
+
+
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <div style="height:20px"></div>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <!-- Contextual button for informational alert messages -->
+                                            <input class="btn btn-danger btn-cons m-b-10" value="Cancel" id="cancel" type="submit" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    <!-- END PANEL -->
+                </div>
+
+            </div>
+        </div>
+    }
+}
+
+@section Scripts{
+
+<script>
+    $(document).ready(function () {
+        $('#cancel').click(function () {
+            parent.$.fn.colorbox.close();
+
+            //var data = $('#ContactDetail').serialize();
+            //var url = 'AllContacts';
+            //alert(url);
+            //var url = $('#ContactDetail').attr('action');
+            //$.post(url, data, function () {
+            //});
+        });
+    });
+</script>
+}

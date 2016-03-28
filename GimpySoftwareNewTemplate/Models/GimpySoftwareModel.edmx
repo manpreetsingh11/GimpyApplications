@@ -1,0 +1,2372 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="GimpyDataModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012.Azure" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Campaign">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="Name" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="Description" Type="text" />
+          <Property Name="Active" Type="bit" />
+          <Property Name="UserId" Type="int" />
+          <Property Name="Date" Type="date" />
+        </EntityType>
+        <EntityType Name="CampaignActivity">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="Date" Type="datetime" Nullable="false" />
+          <Property Name="Note" Type="text" />
+          <Property Name="StatusId" Type="int" />
+          <Property Name="CompanyId" Type="int" Nullable="false" />
+          <Property Name="CampaignId" Type="int" Nullable="false" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'db_lazy.dbo.CampaignCompanies' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="CampaignCompanies">
+          <Key>
+            <PropertyRef Name="CampaignId" />
+            <PropertyRef Name="CompanyId" />
+          </Key>
+          <Property Name="CampaignId" Type="int" Nullable="false" />
+          <Property Name="CompanyId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Category">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="Name" Type="varchar" MaxLength="255" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Company">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="Name" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="CategoryId" Type="int" />
+          <Property Name="Email" Type="varchar" MaxLength="255" />
+          <Property Name="PhoneNumber" Type="varchar" MaxLength="255" />
+          <Property Name="ContactName" Type="varchar" MaxLength="255" />
+          <Property Name="AddressLine1" Type="varchar" MaxLength="255" />
+          <Property Name="AddressLine2" Type="varchar" MaxLength="255" />
+          <Property Name="TownCity" Type="varchar" MaxLength="255" />
+          <Property Name="County" Type="varchar" MaxLength="255" />
+          <Property Name="Postcode" Type="varchar" MaxLength="255" />
+          <Property Name="Country" Type="varchar" MaxLength="255" />
+          <Property Name="Notes" Type="text" />
+          <Property Name="Active" Type="bit" />
+          <Property Name="UserId" Type="int" />
+          <Property Name="website" Type="varchar" MaxLength="200" />
+          <Property Name="Region" Type="varchar" MaxLength="100" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'db_lazy.dbo.CompanyGenres' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="CompanyGenres">
+          <Key>
+            <PropertyRef Name="CompanyId" />
+            <PropertyRef Name="GenreId" />
+          </Key>
+          <Property Name="CompanyId" Type="int" Nullable="false" />
+          <Property Name="GenreId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="DefaultGenres">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="Name" Type="varchar" MaxLength="255" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Genre">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="Name" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="UserId" Type="int" />
+        </EntityType>
+        <EntityType Name="ResetPassword">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="email" Type="varchar" MaxLength="100" />
+          <Property Name="random_no" Type="numeric" Precision="18" Scale="0" />
+          <Property Name="expiretime" Type="datetime" />
+        </EntityType>
+        <EntityType Name="Status">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="Name" Type="varchar" MaxLength="255" Nullable="false" />
+        </EntityType>
+        <EntityType Name="UserInfo">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="Email" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="Password" Type="varchar" MaxLength="255" />
+          <Property Name="LastName" Type="varchar" MaxLength="255" />
+          <Property Name="FirstName" Type="varchar" MaxLength="255" />
+          <Property Name="Country" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="BandArtist" Type="varchar" MaxLength="255" />
+          <Property Name="Company" Type="varchar" MaxLength="255" />
+        </EntityType>
+        <Association Name="FK__Campaign__UserId__245D67DE">
+          <End Role="UserInfo" Type="Self.UserInfo" Multiplicity="0..1" />
+          <End Role="Campaign" Type="Self.Campaign" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UserInfo">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Campaign">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__CampaignA__Campa__3587F3E0">
+          <End Role="Campaign" Type="Self.Campaign" Multiplicity="1" />
+          <End Role="CampaignActivity" Type="Self.CampaignActivity" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Campaign">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="CampaignActivity">
+              <PropertyRef Name="CampaignId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__CampaignA__Compa__3493CFA7">
+          <End Role="Company" Type="Self.Company" Multiplicity="1" />
+          <End Role="CampaignActivity" Type="Self.CampaignActivity" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Company">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="CampaignActivity">
+              <PropertyRef Name="CompanyId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__CampaignA__Statu__339FAB6E">
+          <End Role="Status" Type="Self.Status" Multiplicity="0..1" />
+          <End Role="CampaignActivity" Type="Self.CampaignActivity" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Status">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="CampaignActivity">
+              <PropertyRef Name="StatusId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__CampaignC__Campa__2645B050">
+          <End Role="Campaign" Type="Self.Campaign" Multiplicity="1" />
+          <End Role="CampaignCompanies" Type="Self.CampaignCompanies" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Campaign">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="CampaignCompanies">
+              <PropertyRef Name="CampaignId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__CampaignC__Compa__2739D489">
+          <End Role="Company" Type="Self.Company" Multiplicity="1" />
+          <End Role="CampaignCompanies" Type="Self.CampaignCompanies" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Company">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="CampaignCompanies">
+              <PropertyRef Name="CompanyId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Company__Categor__208CD6FA">
+          <End Role="Category" Type="Self.Category" Multiplicity="0..1" />
+          <End Role="Company" Type="Self.Company" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Category">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Company">
+              <PropertyRef Name="CategoryId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Company__UserId__2180FB33">
+          <End Role="UserInfo" Type="Self.UserInfo" Multiplicity="0..1" />
+          <End Role="Company" Type="Self.Company" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UserInfo">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Company">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__CompanyGe__Compa__29221CFB">
+          <End Role="Company" Type="Self.Company" Multiplicity="1" />
+          <End Role="CompanyGenres" Type="Self.CompanyGenres" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Company">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="CompanyGenres">
+              <PropertyRef Name="CompanyId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__CompanyGe__Genre__2A164134">
+          <End Role="Genre" Type="Self.Genre" Multiplicity="1" />
+          <End Role="CompanyGenres" Type="Self.CompanyGenres" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Genre">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="CompanyGenres">
+              <PropertyRef Name="GenreId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Genre__UserId__1DB06A4F">
+          <End Role="UserInfo" Type="Self.UserInfo" Multiplicity="0..1" />
+          <End Role="Genre" Type="Self.Genre" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UserInfo">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Genre">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Function Name="AddCampaignActivity" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="CompanyId" Type="int" Mode="In" />
+          <Parameter Name="CampaignId" Type="int" Mode="In" />
+          <Parameter Name="StatusId" Type="int" Mode="In" />
+          <Parameter Name="Note" Type="varchar" Mode="In" />
+          <Parameter Name="Date" Type="datetime" Mode="In" />
+        </Function>
+        <Function Name="AddCompanyGenre" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="CompanyId" Type="int" Mode="In" />
+          <Parameter Name="GenreID" Type="int" Mode="In" />
+        </Function>
+        <Function Name="AddNewCompaign" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="name" Type="varchar" Mode="In" />
+          <Parameter Name="description" Type="text" Mode="In" />
+          <Parameter Name="userid" Type="int" Mode="In" />
+        </Function>
+        <Function Name="AddNewCompany" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Name" Type="varchar" Mode="In" />
+          <Parameter Name="CategoryId" Type="int" Mode="In" />
+          <Parameter Name="Email" Type="varchar" Mode="In" />
+          <Parameter Name="PhoneNumber" Type="varchar" Mode="In" />
+          <Parameter Name="ContactName" Type="varchar" Mode="In" />
+          <Parameter Name="AddressLine1" Type="varchar" Mode="In" />
+          <Parameter Name="AddressLine2" Type="varchar" Mode="In" />
+          <Parameter Name="TownCity" Type="varchar" Mode="In" />
+          <Parameter Name="County" Type="varchar" Mode="In" />
+          <Parameter Name="Postcode" Type="varchar" Mode="In" />
+          <Parameter Name="Country" Type="varchar" Mode="In" />
+          <Parameter Name="Notes" Type="text" Mode="In" />
+          <Parameter Name="Active" Type="bit" Mode="In" />
+          <Parameter Name="UserId" Type="int" Mode="In" />
+          <Parameter Name="website" Type="varchar" Mode="In" />
+          <Parameter Name="region" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="CampaignCount" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="userid" Type="int" Mode="In" />
+          <Parameter Name="status" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="checkemail" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="email" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="CheckEmailExists" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="email" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="CheckExistingCompany" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="name" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="CheckExistingCompanyWithID" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="name" Type="varchar" Mode="In" />
+          <Parameter Name="userid" Type="int" Mode="In" />
+        </Function>
+        <Function Name="CheckExistingCompanyWithUser" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="name" Type="varchar" Mode="In" />
+          <Parameter Name="userid" Type="int" Mode="In" />
+        </Function>
+        <Function Name="CheckExists" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="name" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="CheckResetpassword" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="randomno" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="DeleteCampaign" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Id" Type="int" Mode="In" />
+        </Function>
+        <Function Name="DeleteCompaniesFromCampaign" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="CampaignID" Type="int" Mode="In" />
+          <Parameter Name="CompanyID" Type="int" Mode="In" />
+        </Function>
+        <Function Name="DeleteCompany" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Id" Type="int" Mode="In" />
+        </Function>
+        <Function Name="DeleteCompanyGenre" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="CompanyId" Type="int" Mode="In" />
+        </Function>
+        <Function Name="DeleteFromResetpassword" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="randomno" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="Find_Contacts" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="name" Type="varchar" Mode="In" />
+          <Parameter Name="country" Type="varchar" Mode="In" />
+          <Parameter Name="region" Type="varchar" Mode="In" />
+          <Parameter Name="categories" Type="varchar" Mode="In" />
+          <Parameter Name="genres" Type="varchar" Mode="In" />
+          <Parameter Name="userid" Type="int" Mode="In" />
+        </Function>
+        <Function Name="FindActive_Contacts" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="name" Type="varchar" Mode="In" />
+          <Parameter Name="country" Type="varchar" Mode="In" />
+          <Parameter Name="region" Type="varchar" Mode="In" />
+          <Parameter Name="categories" Type="varchar" Mode="In" />
+          <Parameter Name="genres" Type="varchar" Mode="In" />
+          <Parameter Name="userid" Type="int" Mode="In" />
+        </Function>
+        <Function Name="findata_sort" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="name" Type="varchar" Mode="In" />
+          <Parameter Name="country" Type="varchar" Mode="In" />
+          <Parameter Name="region" Type="varchar" Mode="In" />
+          <Parameter Name="categories" Type="varchar" Mode="In" />
+          <Parameter Name="genres" Type="varchar" Mode="In" />
+          <Parameter Name="userid" Type="int" Mode="In" />
+          <Parameter Name="sortby" Type="varchar" Mode="In" />
+          <Parameter Name="from" Type="int" Mode="In" />
+          <Parameter Name="to" Type="int" Mode="In" />
+        </Function>
+        <Function Name="FindCampaign" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="name" Type="varchar" Mode="In" />
+          <Parameter Name="userid" Type="int" Mode="In" />
+          <Parameter Name="status" Type="varchar" Mode="In" />
+          <Parameter Name="from" Type="int" Mode="In" />
+          <Parameter Name="to" Type="int" Mode="In" />
+        </Function>
+        <Function Name="FindCampaignCompanies" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="name" Type="varchar" Mode="In" />
+          <Parameter Name="country" Type="varchar" Mode="In" />
+          <Parameter Name="region" Type="varchar" Mode="In" />
+          <Parameter Name="categories" Type="varchar" Mode="In" />
+          <Parameter Name="genres" Type="varchar" Mode="In" />
+          <Parameter Name="userid" Type="int" Mode="In" />
+        </Function>
+        <Function Name="FindCampaignCount" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="name" Type="varchar" Mode="In" />
+          <Parameter Name="userid" Type="int" Mode="In" />
+          <Parameter Name="status" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="FindCampaignsCompanies" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="name" Type="varchar" Mode="In" />
+          <Parameter Name="country" Type="varchar" Mode="In" />
+          <Parameter Name="region" Type="varchar" Mode="In" />
+          <Parameter Name="categories" Type="varchar" Mode="In" />
+          <Parameter Name="genres" Type="varchar" Mode="In" />
+          <Parameter Name="userid" Type="int" Mode="In" />
+        </Function>
+        <Function Name="FindCampaignSort" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="name" Type="varchar" Mode="In" />
+          <Parameter Name="userid" Type="int" Mode="In" />
+          <Parameter Name="status" Type="varchar" Mode="In" />
+          <Parameter Name="sortby" Type="varchar" Mode="In" />
+          <Parameter Name="sorttype" Type="varchar" Mode="In" />
+          <Parameter Name="from" Type="int" Mode="In" />
+          <Parameter Name="to" Type="int" Mode="In" />
+        </Function>
+        <Function Name="FindCompaniesByCampaigns" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="CampaignID" Type="int" Mode="In" />
+        </Function>
+        <Function Name="FindData" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="name" Type="varchar" Mode="In" />
+          <Parameter Name="country" Type="varchar" Mode="In" />
+          <Parameter Name="region" Type="varchar" Mode="In" />
+          <Parameter Name="categories" Type="varchar" Mode="In" />
+          <Parameter Name="genres" Type="varchar" Mode="In" />
+          <Parameter Name="userid" Type="int" Mode="In" />
+          <Parameter Name="from" Type="int" Mode="In" />
+          <Parameter Name="to" Type="int" Mode="In" />
+        </Function>
+        <Function Name="FindData_Active" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="name" Type="varchar" Mode="In" />
+          <Parameter Name="country" Type="varchar" Mode="In" />
+          <Parameter Name="region" Type="varchar" Mode="In" />
+          <Parameter Name="categories" Type="varchar" Mode="In" />
+          <Parameter Name="genres" Type="varchar" Mode="In" />
+          <Parameter Name="userid" Type="int" Mode="In" />
+          <Parameter Name="from" Type="int" Mode="In" />
+          <Parameter Name="to" Type="int" Mode="In" />
+        </Function>
+        <Function Name="FindData_Active_Sort" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="name" Type="varchar" Mode="In" />
+          <Parameter Name="country" Type="varchar" Mode="In" />
+          <Parameter Name="region" Type="varchar" Mode="In" />
+          <Parameter Name="categories" Type="varchar" Mode="In" />
+          <Parameter Name="genres" Type="varchar" Mode="In" />
+          <Parameter Name="userid" Type="int" Mode="In" />
+          <Parameter Name="sortby" Type="varchar" Mode="In" />
+          <Parameter Name="from" Type="int" Mode="In" />
+          <Parameter Name="to" Type="int" Mode="In" />
+        </Function>
+        <Function Name="FindData_count" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="name" Type="varchar" Mode="In" />
+          <Parameter Name="country" Type="varchar" Mode="In" />
+          <Parameter Name="region" Type="varchar" Mode="In" />
+          <Parameter Name="categories" Type="varchar" Mode="In" />
+          <Parameter Name="genres" Type="varchar" Mode="In" />
+          <Parameter Name="userid" Type="int" Mode="In" />
+        </Function>
+        <Function Name="FindData_countActive" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="name" Type="varchar" Mode="In" />
+          <Parameter Name="country" Type="varchar" Mode="In" />
+          <Parameter Name="region" Type="varchar" Mode="In" />
+          <Parameter Name="categories" Type="varchar" Mode="In" />
+          <Parameter Name="genres" Type="varchar" Mode="In" />
+          <Parameter Name="userid" Type="int" Mode="In" />
+        </Function>
+        <Function Name="fn_Split" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="text" Type="varchar" Mode="In" />
+          <Parameter Name="delimiter" Type="varchar" Mode="In" />
+          <ReturnType>
+            <CollectionType>
+              <RowType>
+                <Property Name="position" Type="int" Nullable="false" />
+                <Property Name="value" Type="varchar" MaxLength="8000" />
+              </RowType>
+            </CollectionType>
+          </ReturnType>
+        </Function>
+        <Function Name="GetAllActiveCampaigns" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="userid" Type="int" Mode="In" />
+        </Function>
+        <Function Name="GetAllActiveContacts" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="userid" Type="int" Mode="In" />
+        </Function>
+        <Function Name="GetAllCampaignByUserID" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="userid" Type="int" Mode="In" />
+          <Parameter Name="from" Type="int" Mode="In" />
+          <Parameter Name="to" Type="int" Mode="In" />
+        </Function>
+        <Function Name="GetAllCampaignStatus" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="GetAllCompaign" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="userid" Type="int" Mode="In" />
+        </Function>
+        <Function Name="GetAllCompanyByID" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="userid" Type="int" Mode="In" />
+        </Function>
+        <Function Name="GetAllCompanyByUserID" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="userid" Type="int" Mode="In" />
+          <Parameter Name="from" Type="int" Mode="In" />
+          <Parameter Name="to" Type="int" Mode="In" />
+        </Function>
+        <Function Name="GetAllCompanyGenresByUserID" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="userid" Type="int" Mode="In" />
+          <Parameter Name="cid" Type="int" Mode="In" />
+        </Function>
+        <Function Name="getallgenre" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="GetAllGenreByUserID" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="userid" Type="int" Mode="In" />
+        </Function>
+        <Function Name="getallgenres" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="GetAllGenresByUserID" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="userid" Type="int" Mode="In" />
+        </Function>
+        <Function Name="GetAllInActiveCampaign" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="userid" Type="int" Mode="In" />
+          <Parameter Name="from" Type="int" Mode="In" />
+          <Parameter Name="to" Type="int" Mode="In" />
+        </Function>
+        <Function Name="GetAllInActiveCampaigns" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="userid" Type="int" Mode="In" />
+        </Function>
+        <Function Name="GetAllInActiveCompany" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="userid" Type="int" Mode="In" />
+          <Parameter Name="from" Type="int" Mode="In" />
+          <Parameter Name="to" Type="int" Mode="In" />
+        </Function>
+        <Function Name="GetAllInActiveCompany1" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="userid" Type="int" Mode="In" />
+        </Function>
+        <Function Name="GetAllInActiveCompanyByUserID" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="userid" Type="int" Mode="In" />
+        </Function>
+        <Function Name="GetAllInActiveContacts" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="userid" Type="int" Mode="In" />
+        </Function>
+        <Function Name="GetCampaignByID" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="CampaignId" Type="int" Mode="In" />
+        </Function>
+        <Function Name="GetCampaignCompanies" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="campaignID" Type="int" Mode="In" />
+          <Parameter Name="from" Type="int" Mode="In" />
+          <Parameter Name="to" Type="int" Mode="In" />
+        </Function>
+        <Function Name="GetCampaignCompaniesCount" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="campaignID" Type="int" Mode="In" />
+        </Function>
+        <Function Name="GetCampaignDataByID" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="userid" Type="int" Mode="In" />
+          <Parameter Name="id" Type="int" Mode="In" />
+        </Function>
+        <Function Name="GetCategory" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="GetCategoryByUser" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="userid" Type="int" Mode="In" />
+        </Function>
+        <Function Name="GetCompanyByID" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="id" Type="int" Mode="In" />
+        </Function>
+        <Function Name="GetCompanyDetailByID" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="id" Type="int" Mode="In" />
+          <Parameter Name="userid" Type="int" Mode="In" />
+        </Function>
+        <Function Name="GetCompanyID" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="GetCountryByUser" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="userid" Type="int" Mode="In" />
+        </Function>
+        <Function Name="getcurrentuserid" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="getgenrebyuserid" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="userid" Type="int" Mode="In" />
+        </Function>
+        <Function Name="Getpassword" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="email" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="GetRegionByCountry" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="userid" Type="int" Mode="In" />
+          <Parameter Name="country" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="GetUserIDByEmail" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="email" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="InsertCompaniesToCampaign" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="CampaignID" Type="int" Mode="In" />
+          <Parameter Name="CompanyID" Type="int" Mode="In" />
+        </Function>
+        <Function Name="insertgenrebyuser" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="name" Type="varchar" Mode="In" />
+          <Parameter Name="userid" Type="int" Mode="In" />
+        </Function>
+        <Function Name="InsertIntoResetpassword" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="email" Type="varchar" Mode="In" />
+          <Parameter Name="randomno" Type="varchar" Mode="In" />
+          <Parameter Name="expiretime" Type="datetime" Mode="In" />
+        </Function>
+        <Function Name="LoginCheck" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="email" Type="varchar" Mode="In" />
+          <Parameter Name="password" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="LoginCheckEncrypt" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="email" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="LoginVerify" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="email" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="RegisterUser" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Email" Type="varchar" Mode="In" />
+          <Parameter Name="Password" Type="varchar" Mode="In" />
+          <Parameter Name="LastName" Type="varchar" Mode="In" />
+          <Parameter Name="FirstName" Type="varchar" Mode="In" />
+          <Parameter Name="Country" Type="varchar" Mode="In" />
+          <Parameter Name="BandArtist" Type="varchar" Mode="In" />
+          <Parameter Name="Company" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="SortCampaign" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="userid" Type="int" Mode="In" />
+          <Parameter Name="sortby" Type="varchar" Mode="In" />
+          <Parameter Name="sorttype" Type="varchar" Mode="In" />
+          <Parameter Name="status" Type="varchar" Mode="In" />
+          <Parameter Name="from" Type="int" Mode="In" />
+          <Parameter Name="to" Type="int" Mode="In" />
+        </Function>
+        <Function Name="SortContact" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="userid" Type="int" Mode="In" />
+          <Parameter Name="sortby" Type="varchar" Mode="In" />
+          <Parameter Name="status" Type="varchar" Mode="In" />
+          <Parameter Name="from" Type="int" Mode="In" />
+          <Parameter Name="to" Type="int" Mode="In" />
+          <Parameter Name="sorttype" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="UpdateCampaign" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Id" Type="int" Mode="In" />
+          <Parameter Name="name" Type="varchar" Mode="In" />
+          <Parameter Name="description" Type="text" Mode="In" />
+          <Parameter Name="userid" Type="int" Mode="In" />
+        </Function>
+        <Function Name="UpdateCompanyByID" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="id" Type="int" Mode="In" />
+          <Parameter Name="name" Type="varchar" Mode="In" />
+          <Parameter Name="catid" Type="int" Mode="In" />
+          <Parameter Name="email" Type="varchar" Mode="In" />
+          <Parameter Name="phone" Type="varchar" Mode="In" />
+          <Parameter Name="contact" Type="varchar" Mode="In" />
+          <Parameter Name="address1" Type="varchar" Mode="In" />
+          <Parameter Name="address2" Type="varchar" Mode="In" />
+          <Parameter Name="towncity" Type="varchar" Mode="In" />
+          <Parameter Name="country" Type="varchar" Mode="In" />
+          <Parameter Name="postcode" Type="varchar" Mode="In" />
+          <Parameter Name="notes" Type="text" Mode="In" />
+          <Parameter Name="active" Type="bit" Mode="In" />
+          <Parameter Name="website" Type="varchar" Mode="In" />
+          <Parameter Name="region" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="updateCompanyGenre" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="CompanyId" Type="int" Mode="In" />
+          <Parameter Name="GenreID" Type="int" Mode="In" />
+        </Function>
+        <Function Name="UpdateGenreByCompanyID" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="cid" Type="int" Mode="In" />
+          <Parameter Name="genres" Type="varchar" Mode="In" />
+        </Function>
+        <EntityContainer Name="GimpyDataModelStoreContainer">
+          <EntitySet Name="Campaign" EntityType="Self.Campaign" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="CampaignActivity" EntityType="Self.CampaignActivity" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Category" EntityType="Self.Category" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Company" EntityType="Self.Company" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="DefaultGenres" EntityType="Self.DefaultGenres" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Genre" EntityType="Self.Genre" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ResetPassword" EntityType="Self.ResetPassword" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Status" EntityType="Self.Status" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="UserInfo" EntityType="Self.UserInfo" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="CampaignCompanies" EntityType="Self.CampaignCompanies" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [CampaignCompanies].[CampaignId] AS [CampaignId], 
+    [CampaignCompanies].[CompanyId] AS [CompanyId]
+    FROM [dbo].[CampaignCompanies] AS [CampaignCompanies]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="CompanyGenres" EntityType="Self.CompanyGenres" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [CompanyGenres].[CompanyId] AS [CompanyId], 
+    [CompanyGenres].[GenreId] AS [GenreId]
+    FROM [dbo].[CompanyGenres] AS [CompanyGenres]</DefiningQuery>
+          </EntitySet>
+          <AssociationSet Name="FK__Campaign__UserId__245D67DE" Association="Self.FK__Campaign__UserId__245D67DE">
+            <End Role="UserInfo" EntitySet="UserInfo" />
+            <End Role="Campaign" EntitySet="Campaign" />
+          </AssociationSet>
+          <AssociationSet Name="FK__CampaignA__Campa__3587F3E0" Association="Self.FK__CampaignA__Campa__3587F3E0">
+            <End Role="Campaign" EntitySet="Campaign" />
+            <End Role="CampaignActivity" EntitySet="CampaignActivity" />
+          </AssociationSet>
+          <AssociationSet Name="FK__CampaignA__Compa__3493CFA7" Association="Self.FK__CampaignA__Compa__3493CFA7">
+            <End Role="Company" EntitySet="Company" />
+            <End Role="CampaignActivity" EntitySet="CampaignActivity" />
+          </AssociationSet>
+          <AssociationSet Name="FK__CampaignA__Statu__339FAB6E" Association="Self.FK__CampaignA__Statu__339FAB6E">
+            <End Role="Status" EntitySet="Status" />
+            <End Role="CampaignActivity" EntitySet="CampaignActivity" />
+          </AssociationSet>
+          <AssociationSet Name="FK__CampaignC__Campa__2645B050" Association="Self.FK__CampaignC__Campa__2645B050">
+            <End Role="Campaign" EntitySet="Campaign" />
+            <End Role="CampaignCompanies" EntitySet="CampaignCompanies" />
+          </AssociationSet>
+          <AssociationSet Name="FK__CampaignC__Compa__2739D489" Association="Self.FK__CampaignC__Compa__2739D489">
+            <End Role="Company" EntitySet="Company" />
+            <End Role="CampaignCompanies" EntitySet="CampaignCompanies" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Company__Categor__208CD6FA" Association="Self.FK__Company__Categor__208CD6FA">
+            <End Role="Category" EntitySet="Category" />
+            <End Role="Company" EntitySet="Company" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Company__UserId__2180FB33" Association="Self.FK__Company__UserId__2180FB33">
+            <End Role="UserInfo" EntitySet="UserInfo" />
+            <End Role="Company" EntitySet="Company" />
+          </AssociationSet>
+          <AssociationSet Name="FK__CompanyGe__Compa__29221CFB" Association="Self.FK__CompanyGe__Compa__29221CFB">
+            <End Role="Company" EntitySet="Company" />
+            <End Role="CompanyGenres" EntitySet="CompanyGenres" />
+          </AssociationSet>
+          <AssociationSet Name="FK__CompanyGe__Genre__2A164134" Association="Self.FK__CompanyGe__Genre__2A164134">
+            <End Role="Genre" EntitySet="Genre" />
+            <End Role="CompanyGenres" EntitySet="CompanyGenres" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Genre__UserId__1DB06A4F" Association="Self.FK__Genre__UserId__1DB06A4F">
+            <End Role="UserInfo" EntitySet="UserInfo" />
+            <End Role="Genre" EntitySet="Genre" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="GimpyDataModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <ComplexType Name="fn_Split_Result">
+          <Property Name="position" Type="Int32" Nullable="false" />
+          <Property Name="value" Type="String" MaxLength="8000" FixedLength="false" Unicode="false" />
+        </ComplexType>
+        <EntityType Name="Campaign">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="Name" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Active" Type="Boolean" />
+          <Property Name="UserId" Type="Int32" />
+          <Property Name="Date" Type="DateTime" Precision="0" />
+          <NavigationProperty Name="UserInfo" Relationship="Self.FK__Campaign__UserId__245D67DE" FromRole="Campaign" ToRole="UserInfo" />
+          <NavigationProperty Name="CampaignActivities" Relationship="Self.FK__CampaignA__Campa__3587F3E0" FromRole="Campaign" ToRole="CampaignActivity" />
+          <NavigationProperty Name="Companies" Relationship="Self.CampaignCompanies" FromRole="Campaign" ToRole="Company" />
+        </EntityType>
+        <EntityType Name="CampaignActivity">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="Date" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Note" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="StatusId" Type="Int32" />
+          <Property Name="CompanyId" Type="Int32" Nullable="false" />
+          <Property Name="CampaignId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Campaign" Relationship="Self.FK__CampaignA__Campa__3587F3E0" FromRole="CampaignActivity" ToRole="Campaign" />
+          <NavigationProperty Name="Company" Relationship="Self.FK__CampaignA__Compa__3493CFA7" FromRole="CampaignActivity" ToRole="Company" />
+          <NavigationProperty Name="Status" Relationship="Self.FK__CampaignA__Statu__339FAB6E" FromRole="CampaignActivity" ToRole="Status" />
+        </EntityType>
+        <EntityType Name="Category">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="Name" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="Companies" Relationship="Self.FK__Company__Categor__208CD6FA" FromRole="Category" ToRole="Company" />
+        </EntityType>
+        <EntityType Name="Company">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="Name" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="CategoryId" Type="Int32" />
+          <Property Name="Email" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="PhoneNumber" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="ContactName" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="AddressLine1" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="AddressLine2" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="TownCity" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="County" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="Postcode" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="Country" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="Notes" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Active" Type="Boolean" />
+          <Property Name="UserId" Type="Int32" />
+          <Property Name="website" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="Region" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="CampaignActivities" Relationship="Self.FK__CampaignA__Compa__3493CFA7" FromRole="Company" ToRole="CampaignActivity" />
+          <NavigationProperty Name="Category" Relationship="Self.FK__Company__Categor__208CD6FA" FromRole="Company" ToRole="Category" />
+          <NavigationProperty Name="UserInfo" Relationship="Self.FK__Company__UserId__2180FB33" FromRole="Company" ToRole="UserInfo" />
+          <NavigationProperty Name="Campaigns" Relationship="Self.CampaignCompanies" FromRole="Company" ToRole="Campaign" />
+          <NavigationProperty Name="Genres" Relationship="Self.CompanyGenres" FromRole="Company" ToRole="Genre" />
+        </EntityType>
+        <EntityType Name="DefaultGenre">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="Name" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Genre">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="Name" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="UserId" Type="Int32" />
+          <NavigationProperty Name="UserInfo" Relationship="Self.FK__Genre__UserId__1DB06A4F" FromRole="Genre" ToRole="UserInfo" />
+          <NavigationProperty Name="Companies" Relationship="Self.CompanyGenres" FromRole="Genre" ToRole="Company" />
+        </EntityType>
+        <EntityType Name="ResetPassword">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="email" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="random_no" Type="Decimal" Precision="18" Scale="0" />
+          <Property Name="expiretime" Type="DateTime" Precision="3" />
+        </EntityType>
+        <EntityType Name="Status">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="Name" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="CampaignActivities" Relationship="Self.FK__CampaignA__Statu__339FAB6E" FromRole="Status" ToRole="CampaignActivity" />
+        </EntityType>
+        <EntityType Name="UserInfo">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="Email" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Password" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="LastName" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="FirstName" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="Country" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="BandArtist" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="Company" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Campaigns" Relationship="Self.FK__Campaign__UserId__245D67DE" FromRole="UserInfo" ToRole="Campaign" />
+          <NavigationProperty Name="Companies" Relationship="Self.FK__Company__UserId__2180FB33" FromRole="UserInfo" ToRole="Company" />
+          <NavigationProperty Name="Genres" Relationship="Self.FK__Genre__UserId__1DB06A4F" FromRole="UserInfo" ToRole="Genre" />
+        </EntityType>
+        <Association Name="FK__Campaign__UserId__245D67DE">
+          <End Role="UserInfo" Type="Self.UserInfo" Multiplicity="0..1" />
+          <End Role="Campaign" Type="Self.Campaign" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UserInfo">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Campaign">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__CampaignA__Campa__3587F3E0">
+          <End Role="Campaign" Type="Self.Campaign" Multiplicity="1" />
+          <End Role="CampaignActivity" Type="Self.CampaignActivity" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Campaign">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="CampaignActivity">
+              <PropertyRef Name="CampaignId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__CampaignA__Compa__3493CFA7">
+          <End Role="Company" Type="Self.Company" Multiplicity="1" />
+          <End Role="CampaignActivity" Type="Self.CampaignActivity" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Company">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="CampaignActivity">
+              <PropertyRef Name="CompanyId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__CampaignA__Statu__339FAB6E">
+          <End Role="Status" Type="Self.Status" Multiplicity="0..1" />
+          <End Role="CampaignActivity" Type="Self.CampaignActivity" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Status">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="CampaignActivity">
+              <PropertyRef Name="StatusId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Company__Categor__208CD6FA">
+          <End Role="Category" Type="Self.Category" Multiplicity="0..1" />
+          <End Role="Company" Type="Self.Company" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Category">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Company">
+              <PropertyRef Name="CategoryId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Company__UserId__2180FB33">
+          <End Role="UserInfo" Type="Self.UserInfo" Multiplicity="0..1" />
+          <End Role="Company" Type="Self.Company" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UserInfo">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Company">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Genre__UserId__1DB06A4F">
+          <End Role="UserInfo" Type="Self.UserInfo" Multiplicity="0..1" />
+          <End Role="Genre" Type="Self.Genre" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UserInfo">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Genre">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="CampaignCompanies">
+          <End Role="Campaign" Type="Self.Campaign" Multiplicity="*" />
+          <End Role="Company" Type="Self.Company" Multiplicity="*" />
+        </Association>
+        <Association Name="CompanyGenres">
+          <End Role="Company" Type="Self.Company" Multiplicity="*" />
+          <End Role="Genre" Type="Self.Genre" Multiplicity="*" />
+        </Association>
+        <EntityContainer Name="GimpyDataEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Campaigns" EntityType="Self.Campaign" />
+          <EntitySet Name="CampaignActivities" EntityType="Self.CampaignActivity" />
+          <EntitySet Name="Categories" EntityType="Self.Category" />
+          <EntitySet Name="Companies" EntityType="Self.Company" />
+          <EntitySet Name="DefaultGenres" EntityType="Self.DefaultGenre" />
+          <EntitySet Name="Genres" EntityType="Self.Genre" />
+          <EntitySet Name="ResetPasswords" EntityType="Self.ResetPassword" />
+          <EntitySet Name="Status" EntityType="Self.Status" />
+          <EntitySet Name="UserInfoes" EntityType="Self.UserInfo" />
+          <AssociationSet Name="FK__Campaign__UserId__245D67DE" Association="Self.FK__Campaign__UserId__245D67DE">
+            <End Role="UserInfo" EntitySet="UserInfoes" />
+            <End Role="Campaign" EntitySet="Campaigns" />
+          </AssociationSet>
+          <AssociationSet Name="FK__CampaignA__Campa__3587F3E0" Association="Self.FK__CampaignA__Campa__3587F3E0">
+            <End Role="Campaign" EntitySet="Campaigns" />
+            <End Role="CampaignActivity" EntitySet="CampaignActivities" />
+          </AssociationSet>
+          <AssociationSet Name="FK__CampaignA__Compa__3493CFA7" Association="Self.FK__CampaignA__Compa__3493CFA7">
+            <End Role="Company" EntitySet="Companies" />
+            <End Role="CampaignActivity" EntitySet="CampaignActivities" />
+          </AssociationSet>
+          <AssociationSet Name="FK__CampaignA__Statu__339FAB6E" Association="Self.FK__CampaignA__Statu__339FAB6E">
+            <End Role="Status" EntitySet="Status" />
+            <End Role="CampaignActivity" EntitySet="CampaignActivities" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Company__Categor__208CD6FA" Association="Self.FK__Company__Categor__208CD6FA">
+            <End Role="Category" EntitySet="Categories" />
+            <End Role="Company" EntitySet="Companies" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Company__UserId__2180FB33" Association="Self.FK__Company__UserId__2180FB33">
+            <End Role="UserInfo" EntitySet="UserInfoes" />
+            <End Role="Company" EntitySet="Companies" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Genre__UserId__1DB06A4F" Association="Self.FK__Genre__UserId__1DB06A4F">
+            <End Role="UserInfo" EntitySet="UserInfoes" />
+            <End Role="Genre" EntitySet="Genres" />
+          </AssociationSet>
+          <AssociationSet Name="CampaignCompanies" Association="Self.CampaignCompanies">
+            <End Role="Campaign" EntitySet="Campaigns" />
+            <End Role="Company" EntitySet="Companies" />
+          </AssociationSet>
+          <AssociationSet Name="CompanyGenres" Association="Self.CompanyGenres">
+            <End Role="Company" EntitySet="Companies" />
+            <End Role="Genre" EntitySet="Genres" />
+          </AssociationSet>
+          <FunctionImport Name="fn_Split" ReturnType="Collection(GimpyDataModel.fn_Split_Result)" IsComposable="true">
+            <Parameter Name="text" Mode="In" Type="String" />
+            <Parameter Name="delimiter" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="AddCampaignActivity">
+            <Parameter Name="CompanyId" Mode="In" Type="Int32" />
+            <Parameter Name="CampaignId" Mode="In" Type="Int32" />
+            <Parameter Name="StatusId" Mode="In" Type="Int32" />
+            <Parameter Name="Note" Mode="In" Type="String" />
+            <Parameter Name="Date" Mode="In" Type="DateTime" />
+          </FunctionImport>
+          <FunctionImport Name="AddCompanyGenre">
+            <Parameter Name="CompanyId" Mode="In" Type="Int32" />
+            <Parameter Name="GenreID" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="AddNewCompaign">
+            <Parameter Name="name" Mode="In" Type="String" />
+            <Parameter Name="description" Mode="In" Type="String" />
+            <Parameter Name="userid" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="AddNewCompany">
+            <Parameter Name="Name" Mode="In" Type="String" />
+            <Parameter Name="CategoryId" Mode="In" Type="Int32" />
+            <Parameter Name="Email" Mode="In" Type="String" />
+            <Parameter Name="PhoneNumber" Mode="In" Type="String" />
+            <Parameter Name="ContactName" Mode="In" Type="String" />
+            <Parameter Name="AddressLine1" Mode="In" Type="String" />
+            <Parameter Name="AddressLine2" Mode="In" Type="String" />
+            <Parameter Name="TownCity" Mode="In" Type="String" />
+            <Parameter Name="County" Mode="In" Type="String" />
+            <Parameter Name="Postcode" Mode="In" Type="String" />
+            <Parameter Name="Country" Mode="In" Type="String" />
+            <Parameter Name="Notes" Mode="In" Type="String" />
+            <Parameter Name="Active" Mode="In" Type="Boolean" />
+            <Parameter Name="UserId" Mode="In" Type="Int32" />
+            <Parameter Name="website" Mode="In" Type="String" />
+            <Parameter Name="region" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="CampaignCount" ReturnType="Collection(Int32)">
+            <Parameter Name="userid" Mode="In" Type="Int32" />
+            <Parameter Name="status" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="checkemail" ReturnType="Collection(Int32)">
+          <Parameter Name="email" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="CheckEmailExists" ReturnType="Collection(GimpyDataModel.CheckEmailExists_Result)">
+          <Parameter Name="email" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="CheckExistingCompany" ReturnType="Collection(Int32)">
+          <Parameter Name="name" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="CheckExistingCompanyWithID" ReturnType="Collection(GimpyDataModel.CheckExistingCompanyWithID_Result)">
+            <Parameter Name="name" Mode="In" Type="String" />
+            <Parameter Name="userid" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="CheckExistingCompanyWithUser" ReturnType="Collection(Int32)">
+            <Parameter Name="name" Mode="In" Type="String" />
+            <Parameter Name="userid" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="CheckExists" ReturnType="Collection(Int32)">
+          <Parameter Name="name" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="CheckResetpassword" ReturnType="Collection(GimpyDataModel.CheckResetpassword_Result)">
+          <Parameter Name="randomno" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="DeleteCampaign">
+          <Parameter Name="Id" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="DeleteCompaniesFromCampaign">
+            <Parameter Name="CampaignID" Mode="In" Type="Int32" />
+            <Parameter Name="CompanyID" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="DeleteCompany">
+          <Parameter Name="Id" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="DeleteCompanyGenre">
+          <Parameter Name="CompanyId" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="DeleteFromResetpassword">
+          <Parameter Name="randomno" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="findata_sort" ReturnType="Collection(GimpyDataModel.findata_sort_Result)">
+            <Parameter Name="name" Mode="In" Type="String" />
+            <Parameter Name="country" Mode="In" Type="String" />
+            <Parameter Name="region" Mode="In" Type="String" />
+            <Parameter Name="categories" Mode="In" Type="String" />
+            <Parameter Name="genres" Mode="In" Type="String" />
+            <Parameter Name="userid" Mode="In" Type="Int32" />
+            <Parameter Name="sortby" Mode="In" Type="String" />
+            <Parameter Name="from" Mode="In" Type="Int32" />
+            <Parameter Name="to" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="FindCampaign" ReturnType="Collection(GimpyDataModel.FindCampaign_Result)">
+            <Parameter Name="name" Mode="In" Type="String" />
+            <Parameter Name="userid" Mode="In" Type="Int32" />
+            <Parameter Name="status" Mode="In" Type="String" />
+            <Parameter Name="from" Mode="In" Type="Int32" />
+            <Parameter Name="to" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="FindCampaignCompanies" ReturnType="Collection(GimpyDataModel.FindCampaignCompanies_Result)">
+            <Parameter Name="name" Mode="In" Type="String" />
+            <Parameter Name="country" Mode="In" Type="String" />
+            <Parameter Name="region" Mode="In" Type="String" />
+            <Parameter Name="categories" Mode="In" Type="String" />
+            <Parameter Name="genres" Mode="In" Type="String" />
+            <Parameter Name="userid" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="FindCampaignCount" ReturnType="Collection(Int32)">
+            <Parameter Name="name" Mode="In" Type="String" />
+            <Parameter Name="userid" Mode="In" Type="Int32" />
+            <Parameter Name="status" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="FindCampaignsCompanies" ReturnType="Collection(GimpyDataModel.FindCampaignsCompanies_Result)">
+            <Parameter Name="name" Mode="In" Type="String" />
+            <Parameter Name="country" Mode="In" Type="String" />
+            <Parameter Name="region" Mode="In" Type="String" />
+            <Parameter Name="categories" Mode="In" Type="String" />
+            <Parameter Name="genres" Mode="In" Type="String" />
+            <Parameter Name="userid" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="FindCampaignSort" ReturnType="Collection(GimpyDataModel.FindCampaignSort_Result)">
+            <Parameter Name="name" Mode="In" Type="String" />
+            <Parameter Name="userid" Mode="In" Type="Int32" />
+            <Parameter Name="status" Mode="In" Type="String" />
+            <Parameter Name="sortby" Mode="In" Type="String" />
+            <Parameter Name="sorttype" Mode="In" Type="String" />
+            <Parameter Name="from" Mode="In" Type="Int32" />
+            <Parameter Name="to" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="FindCompaniesByCampaigns" ReturnType="Collection(Int32)">
+          <Parameter Name="CampaignID" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="FindData" ReturnType="Collection(GimpyDataModel.FindData_Result)">
+            <Parameter Name="name" Mode="In" Type="String" />
+            <Parameter Name="country" Mode="In" Type="String" />
+            <Parameter Name="region" Mode="In" Type="String" />
+            <Parameter Name="categories" Mode="In" Type="String" />
+            <Parameter Name="genres" Mode="In" Type="String" />
+            <Parameter Name="userid" Mode="In" Type="Int32" />
+            <Parameter Name="from" Mode="In" Type="Int32" />
+            <Parameter Name="to" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="FindData_Active" ReturnType="Collection(GimpyDataModel.FindData_Active_Result)">
+            <Parameter Name="name" Mode="In" Type="String" />
+            <Parameter Name="country" Mode="In" Type="String" />
+            <Parameter Name="region" Mode="In" Type="String" />
+            <Parameter Name="categories" Mode="In" Type="String" />
+            <Parameter Name="genres" Mode="In" Type="String" />
+            <Parameter Name="userid" Mode="In" Type="Int32" />
+            <Parameter Name="from" Mode="In" Type="Int32" />
+            <Parameter Name="to" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="FindData_Active_Sort" ReturnType="Collection(GimpyDataModel.FindData_Active_Sort_Result)">
+            <Parameter Name="name" Mode="In" Type="String" />
+            <Parameter Name="country" Mode="In" Type="String" />
+            <Parameter Name="region" Mode="In" Type="String" />
+            <Parameter Name="categories" Mode="In" Type="String" />
+            <Parameter Name="genres" Mode="In" Type="String" />
+            <Parameter Name="userid" Mode="In" Type="Int32" />
+            <Parameter Name="sortby" Mode="In" Type="String" />
+            <Parameter Name="from" Mode="In" Type="Int32" />
+            <Parameter Name="to" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="FindData_count" ReturnType="Collection(GimpyDataModel.FindData_count_Result)">
+            <Parameter Name="name" Mode="In" Type="String" />
+            <Parameter Name="country" Mode="In" Type="String" />
+            <Parameter Name="region" Mode="In" Type="String" />
+            <Parameter Name="categories" Mode="In" Type="String" />
+            <Parameter Name="genres" Mode="In" Type="String" />
+            <Parameter Name="userid" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="FindData_countActive" ReturnType="Collection(GimpyDataModel.FindData_countActive_Result)">
+            <Parameter Name="name" Mode="In" Type="String" />
+            <Parameter Name="country" Mode="In" Type="String" />
+            <Parameter Name="region" Mode="In" Type="String" />
+            <Parameter Name="categories" Mode="In" Type="String" />
+            <Parameter Name="genres" Mode="In" Type="String" />
+            <Parameter Name="userid" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="GetAllCampaignByUserID" ReturnType="Collection(GimpyDataModel.GetAllCampaignByUserID_Result)">
+            <Parameter Name="userid" Mode="In" Type="Int32" />
+            <Parameter Name="from" Mode="In" Type="Int32" />
+            <Parameter Name="to" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="GetAllCampaignStatus" ReturnType="Collection(GimpyDataModel.GetAllCampaignStatus_Result)" />
+          <FunctionImport Name="GetAllCompaign" ReturnType="Collection(GimpyDataModel.GetAllCompaign_Result)">
+          <Parameter Name="userid" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="GetAllCompanyByID" ReturnType="Collection(GimpyDataModel.GetAllCompanyByID_Result)">
+          <Parameter Name="userid" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="GetAllCompanyByUserID" ReturnType="Collection(GimpyDataModel.GetAllCompanyByUserID_Result)">
+            <Parameter Name="userid" Mode="In" Type="Int32" />
+            <Parameter Name="from" Mode="In" Type="Int32" />
+            <Parameter Name="to" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="GetAllCompanyGenresByUserID" ReturnType="Collection(GimpyDataModel.GetAllCompanyGenresByUserID_Result)">
+            <Parameter Name="userid" Mode="In" Type="Int32" />
+            <Parameter Name="cid" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="getallgenre" ReturnType="Collection(String)" />
+          <FunctionImport Name="GetAllGenreByUserID" ReturnType="Collection(String)">
+          <Parameter Name="userid" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="getallgenres" ReturnType="Collection(String)" />
+          <FunctionImport Name="GetAllGenresByUserID" ReturnType="Collection(GimpyDataModel.GetAllGenresByUserID_Result)">
+          <Parameter Name="userid" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="GetAllInActiveCampaign" ReturnType="Collection(GimpyDataModel.GetAllInActiveCampaign_Result)">
+            <Parameter Name="userid" Mode="In" Type="Int32" />
+            <Parameter Name="from" Mode="In" Type="Int32" />
+            <Parameter Name="to" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="GetAllInActiveCompany" ReturnType="Collection(GimpyDataModel.GetAllInActiveCompany_Result)">
+            <Parameter Name="userid" Mode="In" Type="Int32" />
+            <Parameter Name="from" Mode="In" Type="Int32" />
+            <Parameter Name="to" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="GetAllInActiveCompany1" ReturnType="Collection(GimpyDataModel.GetAllInActiveCompany1_Result)">
+          <Parameter Name="userid" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="GetAllInActiveCompanyByUserID" ReturnType="Collection(GimpyDataModel.GetAllInActiveCompanyByUserID_Result)">
+          <Parameter Name="userid" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="GetCampaignByID" ReturnType="Collection(GimpyDataModel.GetCampaignByID_Result)">
+          <Parameter Name="CampaignId" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="GetCampaignCompanies" ReturnType="Collection(GimpyDataModel.GetCampaignCompanies_Result)">
+            <Parameter Name="campaignID" Mode="In" Type="Int32" />
+            <Parameter Name="from" Mode="In" Type="Int32" />
+            <Parameter Name="to" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="GetCampaignCompaniesCount" ReturnType="Collection(Int32)">
+          <Parameter Name="campaignID" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="GetCampaignDataByID" ReturnType="Collection(GimpyDataModel.GetCampaignDataByID_Result)">
+            <Parameter Name="userid" Mode="In" Type="Int32" />
+            <Parameter Name="id" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="GetCategory" ReturnType="Collection(GimpyDataModel.GetCategory_Result)" />
+          <FunctionImport Name="GetCategoryByUser" ReturnType="Collection(GimpyDataModel.GetCategoryByUser_Result)">
+          <Parameter Name="userid" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="GetCompanyByID" ReturnType="Collection(GimpyDataModel.GetCompanyByID_Result)">
+          <Parameter Name="id" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="GetCompanyDetailByID" ReturnType="Collection(GimpyDataModel.GetCompanyDetailByID_Result)">
+            <Parameter Name="id" Mode="In" Type="Int32" />
+            <Parameter Name="userid" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="GetCompanyID" ReturnType="Collection(Int32)" />
+          <FunctionImport Name="getcurrentuserid" ReturnType="Collection(Int32)" />
+          <FunctionImport Name="getgenrebyuserid" ReturnType="Collection(GimpyDataModel.getgenrebyuserid_Result)">
+          <Parameter Name="userid" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="Getpassword" ReturnType="Collection(GimpyDataModel.Getpassword_Result)">
+          <Parameter Name="email" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="GetUserIDByEmail" ReturnType="Collection(GimpyDataModel.GetUserIDByEmail_Result)">
+          <Parameter Name="email" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="InsertCompaniesToCampaign">
+            <Parameter Name="CampaignID" Mode="In" Type="Int32" />
+            <Parameter Name="CompanyID" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="insertgenrebyuser">
+            <Parameter Name="name" Mode="In" Type="String" />
+            <Parameter Name="userid" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="InsertIntoResetpassword">
+            <Parameter Name="email" Mode="In" Type="String" />
+            <Parameter Name="randomno" Mode="In" Type="String" />
+            <Parameter Name="expiretime" Mode="In" Type="DateTime" />
+          </FunctionImport>
+          <FunctionImport Name="LoginCheck" ReturnType="Collection(Int32)">
+            <Parameter Name="email" Mode="In" Type="String" />
+            <Parameter Name="password" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="LoginCheckEncrypt" ReturnType="Collection(String)">
+          <Parameter Name="email" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="LoginVerify" ReturnType="Collection(Int32)">
+          <Parameter Name="email" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="RegisterUser">
+            <Parameter Name="Email" Mode="In" Type="String" />
+            <Parameter Name="Password" Mode="In" Type="String" />
+            <Parameter Name="LastName" Mode="In" Type="String" />
+            <Parameter Name="FirstName" Mode="In" Type="String" />
+            <Parameter Name="Country" Mode="In" Type="String" />
+            <Parameter Name="BandArtist" Mode="In" Type="String" />
+            <Parameter Name="Company" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="SortCampaign" ReturnType="Collection(GimpyDataModel.SortCampaign_Result)">
+            <Parameter Name="userid" Mode="In" Type="Int32" />
+            <Parameter Name="sortby" Mode="In" Type="String" />
+            <Parameter Name="sorttype" Mode="In" Type="String" />
+            <Parameter Name="status" Mode="In" Type="String" />
+            <Parameter Name="from" Mode="In" Type="Int32" />
+            <Parameter Name="to" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="SortContact" ReturnType="Collection(GimpyDataModel.SortContact_Result)">
+            <Parameter Name="userid" Mode="In" Type="Int32" />
+            <Parameter Name="sortby" Mode="In" Type="String" />
+            <Parameter Name="status" Mode="In" Type="String" />
+            <Parameter Name="from" Mode="In" Type="Int32" />
+            <Parameter Name="to" Mode="In" Type="Int32" />
+            <Parameter Name="sorttype" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="UpdateCampaign">
+            <Parameter Name="Id" Mode="In" Type="Int32" />
+            <Parameter Name="name" Mode="In" Type="String" />
+            <Parameter Name="description" Mode="In" Type="String" />
+            <Parameter Name="userid" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="UpdateCompanyByID">
+            <Parameter Name="id" Mode="In" Type="Int32" />
+            <Parameter Name="name" Mode="In" Type="String" />
+            <Parameter Name="catid" Mode="In" Type="Int32" />
+            <Parameter Name="email" Mode="In" Type="String" />
+            <Parameter Name="phone" Mode="In" Type="String" />
+            <Parameter Name="contact" Mode="In" Type="String" />
+            <Parameter Name="address1" Mode="In" Type="String" />
+            <Parameter Name="address2" Mode="In" Type="String" />
+            <Parameter Name="towncity" Mode="In" Type="String" />
+            <Parameter Name="country" Mode="In" Type="String" />
+            <Parameter Name="postcode" Mode="In" Type="String" />
+            <Parameter Name="notes" Mode="In" Type="String" />
+            <Parameter Name="active" Mode="In" Type="Boolean" />
+            <Parameter Name="website" Mode="In" Type="String" />
+            <Parameter Name="region" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="updateCompanyGenre">
+            <Parameter Name="CompanyId" Mode="In" Type="Int32" />
+            <Parameter Name="GenreID" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="UpdateGenreByCompanyID">
+            <Parameter Name="cid" Mode="In" Type="Int32" />
+            <Parameter Name="genres" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="GetAllActiveContacts" ReturnType="Collection(GimpyDataModel.GetAllActiveContacts_Result)">
+          <Parameter Name="userid" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="GetAllInActiveContacts" ReturnType="Collection(GimpyDataModel.GetAllInActiveContacts_Result)">
+          <Parameter Name="userid" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="Find_Contacts" ReturnType="Collection(GimpyDataModel.Find_Contacts_Result)">
+            <Parameter Name="name" Mode="In" Type="String" />
+            <Parameter Name="country" Mode="In" Type="String" />
+            <Parameter Name="region" Mode="In" Type="String" />
+            <Parameter Name="categories" Mode="In" Type="String" />
+            <Parameter Name="genres" Mode="In" Type="String" />
+            <Parameter Name="userid" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="FindActive_Contacts" ReturnType="Collection(GimpyDataModel.FindActive_Contacts_Result)">
+            <Parameter Name="name" Mode="In" Type="String" />
+            <Parameter Name="country" Mode="In" Type="String" />
+            <Parameter Name="region" Mode="In" Type="String" />
+            <Parameter Name="categories" Mode="In" Type="String" />
+            <Parameter Name="genres" Mode="In" Type="String" />
+            <Parameter Name="userid" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="GetAllInActiveCampaigns" ReturnType="Collection(GimpyDataModel.GetAllInActiveCampaigns_Result)">
+          <Parameter Name="userid" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="GetRegionByCountry" ReturnType="Collection(String)">
+            <Parameter Name="userid" Mode="In" Type="Int32" />
+            <Parameter Name="country" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="GetCountryByUser" ReturnType="Collection(String)">
+          <Parameter Name="userid" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="GetAllActiveCampaigns" ReturnType="Collection(GimpyDataModel.GetAllActiveCampaigns_Result)">
+            <Parameter Name="userid" Mode="In" Type="Int32" />
+          </FunctionImport>
+        </EntityContainer>
+        <ComplexType Name="CheckEmailExists_Result">
+          <Property Type="Int32" Name="Id" Nullable="false" />
+          <Property Type="String" Name="Email" Nullable="false" MaxLength="255" />
+          <Property Type="String" Name="Password" Nullable="true" MaxLength="255" />
+          <Property Type="String" Name="LastName" Nullable="true" MaxLength="255" />
+          <Property Type="String" Name="FirstName" Nullable="true" MaxLength="255" />
+          <Property Type="String" Name="Country" Nullable="false" MaxLength="255" />
+          <Property Type="String" Name="BandArtist" Nullable="true" MaxLength="255" />
+          <Property Type="String" Name="Company" Nullable="true" MaxLength="255" />
+        </ComplexType>
+        <ComplexType Name="CheckExistingCompanyWithID_Result">
+          <Property Type="Int32" Name="Id" Nullable="false" />
+          <Property Type="String" Name="Name" Nullable="false" MaxLength="255" />
+          <Property Type="Int32" Name="CategoryId" Nullable="true" />
+          <Property Type="String" Name="Email" Nullable="true" MaxLength="255" />
+          <Property Type="String" Name="PhoneNumber" Nullable="true" MaxLength="255" />
+          <Property Type="String" Name="ContactName" Nullable="true" MaxLength="255" />
+          <Property Type="String" Name="AddressLine1" Nullable="true" MaxLength="255" />
+          <Property Type="String" Name="AddressLine2" Nullable="true" MaxLength="255" />
+          <Property Type="String" Name="TownCity" Nullable="true" MaxLength="255" />
+          <Property Type="String" Name="County" Nullable="true" MaxLength="255" />
+          <Property Type="String" Name="Postcode" Nullable="true" MaxLength="255" />
+          <Property Type="String" Name="Country" Nullable="true" MaxLength="255" />
+          <Property Type="String" Name="Notes" Nullable="true" MaxLength="Max" />
+          <Property Type="Boolean" Name="Active" Nullable="true" />
+          <Property Type="Int32" Name="UserId" Nullable="true" />
+          <Property Type="String" Name="website" Nullable="true" MaxLength="200" />
+          <Property Type="String" Name="Region" Nullable="true" MaxLength="100" />
+        </ComplexType>
+        <ComplexType Name="CheckResetpassword_Result">
+          <Property Type="Int32" Name="id" Nullable="false" />
+          <Property Type="String" Name="email" Nullable="true" MaxLength="100" />
+          <Property Type="Decimal" Name="random_no" Nullable="true" Precision="18" Scale="0" />
+          <Property Type="DateTime" Name="expiretime" Nullable="true" Precision="23" />
+        </ComplexType>
+        <ComplexType Name="findata_sort_Result">
+          <Property Type="Int64" Name="RowNumber" Nullable="true" />
+          <Property Type="Int32" Name="id" Nullable="false" />
+          <Property Type="String" Name="name" Nullable="false" MaxLength="255" />
+          <Property Type="String" Name="Category" Nullable="true" MaxLength="255" />
+          <Property Type="String" Name="email" Nullable="true" MaxLength="255" />
+          <Property Type="Boolean" Name="active" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="FindCampaign_Result">
+          <Property Type="Int64" Name="RowNumber" Nullable="true" />
+          <Property Type="Int32" Name="Id" Nullable="false" />
+          <Property Type="String" Name="Name" Nullable="false" MaxLength="255" />
+          <Property Type="String" Name="Description" Nullable="true" MaxLength="Max" />
+          <Property Type="Boolean" Name="Active" Nullable="true" />
+          <Property Type="Int32" Name="UserId" Nullable="true" />
+          <Property Type="DateTime" Name="Date" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="FindCampaignCompanies_Result">
+          <Property Type="Int32" Name="id" Nullable="false" />
+          <Property Type="String" Name="name" Nullable="false" MaxLength="255" />
+          <Property Type="String" Name="Category" Nullable="true" MaxLength="255" />
+          <Property Type="String" Name="genre" Nullable="true" MaxLength="255" />
+        </ComplexType>
+        <ComplexType Name="FindCampaignsCompanies_Result">
+          <Property Type="Int32" Name="id" Nullable="false" />
+          <Property Type="String" Name="name" Nullable="false" MaxLength="255" />
+          <Property Type="String" Name="Category" Nullable="true" MaxLength="255" />
+          <Property Type="String" Name="genre" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="FindCampaignSort_Result">
+          <Property Type="Int64" Name="RowNumber" Nullable="true" />
+          <Property Type="Int32" Name="Id" Nullable="false" />
+          <Property Type="String" Name="Name" Nullable="false" MaxLength="255" />
+          <Property Type="String" Name="Description" Nullable="true" MaxLength="Max" />
+          <Property Type="Boolean" Name="Active" Nullable="true" />
+          <Property Type="Int32" Name="UserId" Nullable="true" />
+          <Property Type="DateTime" Name="Date" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="FindData_Result">
+          <Property Type="Int64" Name="RowNumber" Nullable="true" />
+          <Property Type="Int32" Name="id" Nullable="false" />
+          <Property Type="String" Name="name" Nullable="false" MaxLength="255" />
+          <Property Type="String" Name="Category" Nullable="true" MaxLength="255" />
+          <Property Type="String" Name="email" Nullable="true" MaxLength="255" />
+          <Property Type="Boolean" Name="active" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="FindData_Active_Result">
+          <Property Type="Int64" Name="RowNumber" Nullable="true" />
+          <Property Type="Int32" Name="id" Nullable="false" />
+          <Property Type="String" Name="name" Nullable="false" MaxLength="255" />
+          <Property Type="String" Name="Category" Nullable="true" MaxLength="255" />
+          <Property Type="String" Name="email" Nullable="true" MaxLength="255" />
+          <Property Type="Boolean" Name="active" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="FindData_Active_Sort_Result">
+          <Property Type="Int64" Name="RowNumber" Nullable="true" />
+          <Property Type="Int32" Name="id" Nullable="false" />
+          <Property Type="String" Name="name" Nullable="false" MaxLength="255" />
+          <Property Type="String" Name="Category" Nullable="true" MaxLength="255" />
+          <Property Type="String" Name="email" Nullable="true" MaxLength="255" />
+          <Property Type="Boolean" Name="active" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="FindData_count_Result">
+          <Property Type="Int32" Name="id" Nullable="false" />
+          <Property Type="String" Name="name" Nullable="false" MaxLength="255" />
+          <Property Type="String" Name="Category" Nullable="true" MaxLength="255" />
+          <Property Type="String" Name="email" Nullable="true" MaxLength="255" />
+          <Property Type="Boolean" Name="active" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="FindData_countActive_Result">
+          <Property Type="Int32" Name="id" Nullable="false" />
+          <Property Type="String" Name="name" Nullable="false" MaxLength="255" />
+          <Property Type="String" Name="Category" Nullable="true" MaxLength="255" />
+          <Property Type="String" Name="email" Nullable="true" MaxLength="255" />
+          <Property Type="Boolean" Name="active" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="GetAllCampaignByUserID_Result">
+          <Property Type="Int64" Name="RowNumber" Nullable="true" />
+          <Property Type="Int32" Name="Id" Nullable="false" />
+          <Property Type="String" Name="Name" Nullable="false" MaxLength="255" />
+          <Property Type="String" Name="Description" Nullable="true" MaxLength="Max" />
+          <Property Type="Boolean" Name="Active" Nullable="true" />
+          <Property Type="Int32" Name="UserId" Nullable="true" />
+          <Property Type="DateTime" Name="Date" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="GetAllCampaignStatus_Result">
+          <Property Type="Int32" Name="Id" Nullable="false" />
+          <Property Type="String" Name="Name" Nullable="false" MaxLength="255" />
+        </ComplexType>
+        <ComplexType Name="GetAllCompaign_Result">
+          <Property Type="Int32" Name="Id" Nullable="false" />
+          <Property Type="String" Name="Name" Nullable="false" MaxLength="255" />
+          <Property Type="String" Name="Description" Nullable="true" MaxLength="Max" />
+          <Property Type="Boolean" Name="Active" Nullable="true" />
+          <Property Type="Int32" Name="UserId" Nullable="true" />
+          <Property Type="DateTime" Name="Date" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="GetAllCompanyByID_Result">
+          <Property Type="Int64" Name="RowNumber" Nullable="true" />
+          <Property Type="Int32" Name="id" Nullable="false" />
+          <Property Type="String" Name="name" Nullable="false" MaxLength="255" />
+          <Property Type="String" Name="Category" Nullable="true" MaxLength="255" />
+          <Property Type="String" Name="email" Nullable="true" MaxLength="255" />
+        </ComplexType>
+        <ComplexType Name="GetAllCompanyByUserID_Result">
+          <Property Type="Int64" Name="RowNumber" Nullable="true" />
+          <Property Type="Int32" Name="id" Nullable="false" />
+          <Property Type="String" Name="name" Nullable="false" MaxLength="255" />
+          <Property Type="String" Name="Category" Nullable="true" MaxLength="255" />
+          <Property Type="String" Name="email" Nullable="true" MaxLength="255" />
+          <Property Type="Boolean" Name="active" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="GetAllCompanyGenresByUserID_Result">
+          <Property Type="Int32" Name="genreid" Nullable="false" />
+          <Property Type="String" Name="genre" Nullable="true" MaxLength="255" />
+        </ComplexType>
+        <ComplexType Name="GetAllGenresByUserID_Result">
+          <Property Type="Int32" Name="genreid" Nullable="false" />
+          <Property Type="String" Name="genre" Nullable="true" MaxLength="255" />
+        </ComplexType>
+        <ComplexType Name="GetAllInActiveCampaign_Result">
+          <Property Type="Int64" Name="RowNumber" Nullable="true" />
+          <Property Type="Int32" Name="Id" Nullable="false" />
+          <Property Type="String" Name="Name" Nullable="false" MaxLength="255" />
+          <Property Type="String" Name="Description" Nullable="true" MaxLength="Max" />
+          <Property Type="Boolean" Name="Active" Nullable="true" />
+          <Property Type="Int32" Name="UserId" Nullable="true" />
+          <Property Type="DateTime" Name="Date" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="GetAllInActiveCompany_Result">
+          <Property Type="Int64" Name="RowNumber" Nullable="true" />
+          <Property Type="Int32" Name="id" Nullable="false" />
+          <Property Type="String" Name="name" Nullable="false" MaxLength="255" />
+          <Property Type="String" Name="Category" Nullable="true" MaxLength="255" />
+          <Property Type="String" Name="email" Nullable="true" MaxLength="255" />
+          <Property Type="Boolean" Name="active" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="GetAllInActiveCompany1_Result">
+          <Property Type="Int64" Name="RowNumber" Nullable="true" />
+          <Property Type="Int32" Name="id" Nullable="false" />
+          <Property Type="String" Name="name" Nullable="false" MaxLength="255" />
+          <Property Type="String" Name="Category" Nullable="true" MaxLength="255" />
+          <Property Type="String" Name="email" Nullable="true" MaxLength="255" />
+        </ComplexType>
+        <ComplexType Name="GetAllInActiveCompanyByUserID_Result">
+          <Property Type="Int32" Name="id" Nullable="false" />
+          <Property Type="String" Name="name" Nullable="false" MaxLength="255" />
+          <Property Type="String" Name="Category" Nullable="true" MaxLength="255" />
+          <Property Type="String" Name="email" Nullable="true" MaxLength="255" />
+        </ComplexType>
+        <ComplexType Name="GetCampaignByID_Result">
+          <Property Type="DateTime" Name="Date" Nullable="false" Precision="23" />
+          <Property Type="String" Name="Contact" Nullable="true" MaxLength="255" />
+          <Property Type="String" Name="Note" Nullable="true" MaxLength="Max" />
+          <Property Type="String" Name="Status" Nullable="true" MaxLength="255" />
+        </ComplexType>
+        <ComplexType Name="GetCampaignCompanies_Result">
+          <Property Type="Int64" Name="RowNumber" Nullable="true" />
+          <Property Type="Int32" Name="id" Nullable="false" />
+          <Property Type="String" Name="name" Nullable="false" MaxLength="255" />
+          <Property Type="String" Name="Category" Nullable="true" MaxLength="255" />
+          <Property Type="String" Name="genre" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="GetCampaignDataByID_Result">
+          <Property Type="Int32" Name="Id" Nullable="false" />
+          <Property Type="String" Name="Name" Nullable="false" MaxLength="255" />
+          <Property Type="String" Name="Description" Nullable="true" MaxLength="Max" />
+          <Property Type="Boolean" Name="Active" Nullable="true" />
+          <Property Type="Int32" Name="UserId" Nullable="true" />
+          <Property Type="DateTime" Name="Date" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="GetCategory_Result">
+          <Property Type="Int32" Name="Id" Nullable="false" />
+          <Property Type="String" Name="Name" Nullable="false" MaxLength="255" />
+        </ComplexType>
+        <ComplexType Name="GetCategoryByUser_Result">
+          <Property Type="Int32" Name="Id" Nullable="true" />
+          <Property Type="String" Name="name" Nullable="true" MaxLength="255" />
+        </ComplexType>
+        <ComplexType Name="GetCompanyByID_Result">
+          <Property Type="Int32" Name="Id" Nullable="false" />
+          <Property Type="String" Name="Name" Nullable="false" MaxLength="255" />
+          <Property Type="Int32" Name="CategoryId" Nullable="true" />
+          <Property Type="String" Name="Email" Nullable="true" MaxLength="255" />
+          <Property Type="String" Name="PhoneNumber" Nullable="true" MaxLength="255" />
+          <Property Type="String" Name="ContactName" Nullable="true" MaxLength="255" />
+          <Property Type="String" Name="AddressLine1" Nullable="true" MaxLength="255" />
+          <Property Type="String" Name="AddressLine2" Nullable="true" MaxLength="255" />
+          <Property Type="String" Name="TownCity" Nullable="true" MaxLength="255" />
+          <Property Type="String" Name="County" Nullable="true" MaxLength="255" />
+          <Property Type="String" Name="Postcode" Nullable="true" MaxLength="255" />
+          <Property Type="String" Name="Country" Nullable="true" MaxLength="255" />
+          <Property Type="String" Name="Notes" Nullable="true" MaxLength="Max" />
+          <Property Type="Boolean" Name="Active" Nullable="true" />
+          <Property Type="Int32" Name="UserId" Nullable="true" />
+          <Property Type="String" Name="website" Nullable="true" MaxLength="200" />
+          <Property Type="String" Name="Region" Nullable="true" MaxLength="100" />
+        </ComplexType>
+        <ComplexType Name="GetCompanyDetailByID_Result">
+          <Property Type="Int32" Name="id" Nullable="false" />
+          <Property Type="String" Name="name" Nullable="false" MaxLength="255" />
+          <Property Type="String" Name="Category" Nullable="true" MaxLength="255" />
+          <Property Type="String" Name="email" Nullable="true" MaxLength="255" />
+          <Property Type="String" Name="phonenumber" Nullable="true" MaxLength="255" />
+          <Property Type="String" Name="contactname" Nullable="true" MaxLength="255" />
+          <Property Type="String" Name="addressline1" Nullable="true" MaxLength="255" />
+          <Property Type="String" Name="addressline2" Nullable="true" MaxLength="255" />
+          <Property Type="String" Name="towncity" Nullable="true" MaxLength="255" />
+          <Property Type="String" Name="postcode" Nullable="true" MaxLength="255" />
+          <Property Type="String" Name="country" Nullable="true" MaxLength="255" />
+          <Property Type="String" Name="notes" Nullable="true" MaxLength="Max" />
+          <Property Type="Boolean" Name="active" Nullable="true" />
+          <Property Type="String" Name="website" Nullable="true" MaxLength="200" />
+          <Property Type="String" Name="region" Nullable="true" MaxLength="100" />
+        </ComplexType>
+        <ComplexType Name="getgenrebyuserid_Result">
+          <Property Type="Int32" Name="Id" Nullable="false" />
+          <Property Type="String" Name="Name" Nullable="false" MaxLength="255" />
+          <Property Type="Int32" Name="UserId" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="Getpassword_Result">
+          <Property Type="Int32" Name="Id" Nullable="false" />
+          <Property Type="String" Name="Email" Nullable="false" MaxLength="255" />
+          <Property Type="String" Name="Password" Nullable="true" MaxLength="255" />
+          <Property Type="String" Name="LastName" Nullable="true" MaxLength="255" />
+          <Property Type="String" Name="FirstName" Nullable="true" MaxLength="255" />
+          <Property Type="String" Name="Country" Nullable="false" MaxLength="255" />
+          <Property Type="String" Name="BandArtist" Nullable="true" MaxLength="255" />
+          <Property Type="String" Name="Company" Nullable="true" MaxLength="255" />
+        </ComplexType>
+        <ComplexType Name="GetUserIDByEmail_Result">
+          <Property Type="Int32" Name="Id" Nullable="false" />
+          <Property Type="String" Name="Email" Nullable="false" MaxLength="255" />
+          <Property Type="String" Name="Password" Nullable="true" MaxLength="255" />
+          <Property Type="String" Name="LastName" Nullable="true" MaxLength="255" />
+          <Property Type="String" Name="FirstName" Nullable="true" MaxLength="255" />
+          <Property Type="String" Name="Country" Nullable="false" MaxLength="255" />
+          <Property Type="String" Name="BandArtist" Nullable="true" MaxLength="255" />
+          <Property Type="String" Name="Company" Nullable="true" MaxLength="255" />
+        </ComplexType>
+        <ComplexType Name="SortCampaign_Result">
+          <Property Type="Int64" Name="RowNumber" Nullable="true" />
+          <Property Type="Int32" Name="Id" Nullable="false" />
+          <Property Type="String" Name="Name" Nullable="false" MaxLength="255" />
+          <Property Type="String" Name="Description" Nullable="true" MaxLength="Max" />
+          <Property Type="Boolean" Name="Active" Nullable="true" />
+          <Property Type="Int32" Name="UserId" Nullable="true" />
+          <Property Type="DateTime" Name="Date" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="SortContact_Result">
+          <Property Type="Int64" Name="RowNumber" Nullable="true" />
+          <Property Type="Int32" Name="id" Nullable="false" />
+          <Property Type="String" Name="name" Nullable="false" MaxLength="255" />
+          <Property Type="String" Name="Category" Nullable="true" MaxLength="255" />
+          <Property Type="String" Name="email" Nullable="true" MaxLength="255" />
+          <Property Type="Boolean" Name="active" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="GetAllActiveContacts_Result">
+          <Property Type="Int32" Name="id" Nullable="false" />
+          <Property Type="String" Name="name" Nullable="false" MaxLength="255" />
+          <Property Type="String" Name="Category" Nullable="true" MaxLength="255" />
+          <Property Type="String" Name="email" Nullable="true" MaxLength="255" />
+          <Property Type="Boolean" Name="active" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="GetAllInActiveContacts_Result">
+          <Property Type="Int32" Name="id" Nullable="false" />
+          <Property Type="String" Name="name" Nullable="false" MaxLength="255" />
+          <Property Type="String" Name="Category" Nullable="true" MaxLength="255" />
+          <Property Type="String" Name="email" Nullable="true" MaxLength="255" />
+          <Property Type="Boolean" Name="active" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="Find_Contacts_Result">
+          <Property Type="Int32" Name="id" Nullable="false" />
+          <Property Type="String" Name="name" Nullable="false" MaxLength="255" />
+          <Property Type="String" Name="Category" Nullable="true" MaxLength="255" />
+          <Property Type="String" Name="email" Nullable="true" MaxLength="255" />
+          <Property Type="Boolean" Name="active" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="FindActive_Contacts_Result">
+          <Property Type="Int32" Name="id" Nullable="false" />
+          <Property Type="String" Name="name" Nullable="false" MaxLength="255" />
+          <Property Type="String" Name="Category" Nullable="true" MaxLength="255" />
+          <Property Type="String" Name="email" Nullable="true" MaxLength="255" />
+          <Property Type="Boolean" Name="active" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="GetAllInActiveCampaigns_Result">
+          <Property Type="Int32" Name="Id" Nullable="false" />
+          <Property Type="String" Name="Name" Nullable="false" MaxLength="255" />
+          <Property Type="String" Name="Description" Nullable="true" MaxLength="Max" />
+          <Property Type="Boolean" Name="Active" Nullable="true" />
+          <Property Type="Int32" Name="UserId" Nullable="true" />
+          <Property Type="DateTime" Name="Date" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="GetAllActiveCampaigns_Result">
+          <Property Type="Int32" Name="Id" Nullable="false" />
+          <Property Type="String" Name="Name" Nullable="false" MaxLength="255" />
+          <Property Type="String" Name="Description" Nullable="true" MaxLength="Max" />
+          <Property Type="Boolean" Name="Active" Nullable="true" />
+          <Property Type="Int32" Name="UserId" Nullable="true" />
+          <Property Type="DateTime" Name="Date" Nullable="true" />
+        </ComplexType>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="GimpyDataModelStoreContainer" CdmEntityContainer="GimpyDataEntities">
+          <EntitySetMapping Name="Campaigns">
+            <EntityTypeMapping TypeName="GimpyDataModel.Campaign">
+              <MappingFragment StoreEntitySet="Campaign">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Active" ColumnName="Active" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="Date" ColumnName="Date" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CampaignActivities">
+            <EntityTypeMapping TypeName="GimpyDataModel.CampaignActivity">
+              <MappingFragment StoreEntitySet="CampaignActivity">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Date" ColumnName="Date" />
+                <ScalarProperty Name="Note" ColumnName="Note" />
+                <ScalarProperty Name="StatusId" ColumnName="StatusId" />
+                <ScalarProperty Name="CompanyId" ColumnName="CompanyId" />
+                <ScalarProperty Name="CampaignId" ColumnName="CampaignId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Categories">
+            <EntityTypeMapping TypeName="GimpyDataModel.Category">
+              <MappingFragment StoreEntitySet="Category">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Companies">
+            <EntityTypeMapping TypeName="GimpyDataModel.Company">
+              <MappingFragment StoreEntitySet="Company">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="CategoryId" ColumnName="CategoryId" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="PhoneNumber" ColumnName="PhoneNumber" />
+                <ScalarProperty Name="ContactName" ColumnName="ContactName" />
+                <ScalarProperty Name="AddressLine1" ColumnName="AddressLine1" />
+                <ScalarProperty Name="AddressLine2" ColumnName="AddressLine2" />
+                <ScalarProperty Name="TownCity" ColumnName="TownCity" />
+                <ScalarProperty Name="County" ColumnName="County" />
+                <ScalarProperty Name="Postcode" ColumnName="Postcode" />
+                <ScalarProperty Name="Country" ColumnName="Country" />
+                <ScalarProperty Name="Notes" ColumnName="Notes" />
+                <ScalarProperty Name="Active" ColumnName="Active" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="website" ColumnName="website" />
+                <ScalarProperty Name="Region" ColumnName="Region" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="DefaultGenres">
+            <EntityTypeMapping TypeName="GimpyDataModel.DefaultGenre">
+              <MappingFragment StoreEntitySet="DefaultGenres">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Genres">
+            <EntityTypeMapping TypeName="GimpyDataModel.Genre">
+              <MappingFragment StoreEntitySet="Genre">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ResetPasswords">
+            <EntityTypeMapping TypeName="GimpyDataModel.ResetPassword">
+              <MappingFragment StoreEntitySet="ResetPassword">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="email" ColumnName="email" />
+                <ScalarProperty Name="random_no" ColumnName="random_no" />
+                <ScalarProperty Name="expiretime" ColumnName="expiretime" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Status">
+            <EntityTypeMapping TypeName="GimpyDataModel.Status">
+              <MappingFragment StoreEntitySet="Status">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="UserInfoes">
+            <EntityTypeMapping TypeName="GimpyDataModel.UserInfo">
+              <MappingFragment StoreEntitySet="UserInfo">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="LastName" ColumnName="LastName" />
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+                <ScalarProperty Name="Country" ColumnName="Country" />
+                <ScalarProperty Name="BandArtist" ColumnName="BandArtist" />
+                <ScalarProperty Name="Company" ColumnName="Company" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <AssociationSetMapping Name="CampaignCompanies" TypeName="GimpyDataModel.CampaignCompanies" StoreEntitySet="CampaignCompanies">
+            <EndProperty Name="Campaign">
+              <ScalarProperty Name="Id" ColumnName="CampaignId" />
+            </EndProperty>
+            <EndProperty Name="Company">
+              <ScalarProperty Name="Id" ColumnName="CompanyId" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <AssociationSetMapping Name="CompanyGenres" TypeName="GimpyDataModel.CompanyGenres" StoreEntitySet="CompanyGenres">
+            <EndProperty Name="Company">
+              <ScalarProperty Name="Id" ColumnName="CompanyId" />
+            </EndProperty>
+            <EndProperty Name="Genre">
+              <ScalarProperty Name="Id" ColumnName="GenreId" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <FunctionImportMapping FunctionName="GimpyDataModel.Store.fn_Split" FunctionImportName="fn_Split">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="GimpyDataModel.fn_Split_Result">
+                <ScalarProperty Name="position" ColumnName="position" />
+                <ScalarProperty Name="value" ColumnName="value" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="AddCampaignActivity" FunctionName="GimpyDataModel.Store.AddCampaignActivity" />
+          <FunctionImportMapping FunctionImportName="AddCompanyGenre" FunctionName="GimpyDataModel.Store.AddCompanyGenre" />
+          <FunctionImportMapping FunctionImportName="AddNewCompaign" FunctionName="GimpyDataModel.Store.AddNewCompaign" />
+          <FunctionImportMapping FunctionImportName="AddNewCompany" FunctionName="GimpyDataModel.Store.AddNewCompany" />
+          <FunctionImportMapping FunctionImportName="CampaignCount" FunctionName="GimpyDataModel.Store.CampaignCount" />
+          <FunctionImportMapping FunctionImportName="checkemail" FunctionName="GimpyDataModel.Store.checkemail" />
+          <FunctionImportMapping FunctionImportName="CheckEmailExists" FunctionName="GimpyDataModel.Store.CheckEmailExists">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="GimpyDataModel.CheckEmailExists_Result">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="LastName" ColumnName="LastName" />
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+                <ScalarProperty Name="Country" ColumnName="Country" />
+                <ScalarProperty Name="BandArtist" ColumnName="BandArtist" />
+                <ScalarProperty Name="Company" ColumnName="Company" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="CheckExistingCompany" FunctionName="GimpyDataModel.Store.CheckExistingCompany" />
+          <FunctionImportMapping FunctionImportName="CheckExistingCompanyWithID" FunctionName="GimpyDataModel.Store.CheckExistingCompanyWithID">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="GimpyDataModel.CheckExistingCompanyWithID_Result">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="CategoryId" ColumnName="CategoryId" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="PhoneNumber" ColumnName="PhoneNumber" />
+                <ScalarProperty Name="ContactName" ColumnName="ContactName" />
+                <ScalarProperty Name="AddressLine1" ColumnName="AddressLine1" />
+                <ScalarProperty Name="AddressLine2" ColumnName="AddressLine2" />
+                <ScalarProperty Name="TownCity" ColumnName="TownCity" />
+                <ScalarProperty Name="County" ColumnName="County" />
+                <ScalarProperty Name="Postcode" ColumnName="Postcode" />
+                <ScalarProperty Name="Country" ColumnName="Country" />
+                <ScalarProperty Name="Notes" ColumnName="Notes" />
+                <ScalarProperty Name="Active" ColumnName="Active" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="website" ColumnName="website" />
+                <ScalarProperty Name="Region" ColumnName="Region" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="CheckExistingCompanyWithUser" FunctionName="GimpyDataModel.Store.CheckExistingCompanyWithUser" />
+          <FunctionImportMapping FunctionImportName="CheckExists" FunctionName="GimpyDataModel.Store.CheckExists" />
+          <FunctionImportMapping FunctionImportName="CheckResetpassword" FunctionName="GimpyDataModel.Store.CheckResetpassword">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="GimpyDataModel.CheckResetpassword_Result">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="email" ColumnName="email" />
+                <ScalarProperty Name="random_no" ColumnName="random_no" />
+                <ScalarProperty Name="expiretime" ColumnName="expiretime" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="DeleteCampaign" FunctionName="GimpyDataModel.Store.DeleteCampaign" />
+          <FunctionImportMapping FunctionImportName="DeleteCompaniesFromCampaign" FunctionName="GimpyDataModel.Store.DeleteCompaniesFromCampaign" />
+          <FunctionImportMapping FunctionImportName="DeleteCompany" FunctionName="GimpyDataModel.Store.DeleteCompany" />
+          <FunctionImportMapping FunctionImportName="DeleteCompanyGenre" FunctionName="GimpyDataModel.Store.DeleteCompanyGenre" />
+          <FunctionImportMapping FunctionImportName="DeleteFromResetpassword" FunctionName="GimpyDataModel.Store.DeleteFromResetpassword" />
+          <FunctionImportMapping FunctionImportName="findata_sort" FunctionName="GimpyDataModel.Store.findata_sort">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="GimpyDataModel.findata_sort_Result">
+                <ScalarProperty Name="RowNumber" ColumnName="RowNumber" />
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="Category" ColumnName="Category" />
+                <ScalarProperty Name="email" ColumnName="email" />
+                <ScalarProperty Name="active" ColumnName="active" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="FindCampaign" FunctionName="GimpyDataModel.Store.FindCampaign">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="GimpyDataModel.FindCampaign_Result">
+                <ScalarProperty Name="RowNumber" ColumnName="RowNumber" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Active" ColumnName="Active" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="Date" ColumnName="Date" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="FindCampaignCompanies" FunctionName="GimpyDataModel.Store.FindCampaignCompanies">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="GimpyDataModel.FindCampaignCompanies_Result">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="Category" ColumnName="Category" />
+                <ScalarProperty Name="genre" ColumnName="genre" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="FindCampaignCount" FunctionName="GimpyDataModel.Store.FindCampaignCount" />
+          <FunctionImportMapping FunctionImportName="FindCampaignsCompanies" FunctionName="GimpyDataModel.Store.FindCampaignsCompanies">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="GimpyDataModel.FindCampaignsCompanies_Result">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="Category" ColumnName="Category" />
+                <ScalarProperty Name="genre" ColumnName="genre" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="FindCampaignSort" FunctionName="GimpyDataModel.Store.FindCampaignSort">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="GimpyDataModel.FindCampaignSort_Result">
+                <ScalarProperty Name="RowNumber" ColumnName="RowNumber" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Active" ColumnName="Active" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="Date" ColumnName="Date" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="FindCompaniesByCampaigns" FunctionName="GimpyDataModel.Store.FindCompaniesByCampaigns" />
+          <FunctionImportMapping FunctionImportName="FindData" FunctionName="GimpyDataModel.Store.FindData">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="GimpyDataModel.FindData_Result">
+                <ScalarProperty Name="RowNumber" ColumnName="RowNumber" />
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="Category" ColumnName="Category" />
+                <ScalarProperty Name="email" ColumnName="email" />
+                <ScalarProperty Name="active" ColumnName="active" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="FindData_Active" FunctionName="GimpyDataModel.Store.FindData_Active">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="GimpyDataModel.FindData_Active_Result">
+                <ScalarProperty Name="RowNumber" ColumnName="RowNumber" />
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="Category" ColumnName="Category" />
+                <ScalarProperty Name="email" ColumnName="email" />
+                <ScalarProperty Name="active" ColumnName="active" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="FindData_Active_Sort" FunctionName="GimpyDataModel.Store.FindData_Active_Sort">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="GimpyDataModel.FindData_Active_Sort_Result">
+                <ScalarProperty Name="RowNumber" ColumnName="RowNumber" />
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="Category" ColumnName="Category" />
+                <ScalarProperty Name="email" ColumnName="email" />
+                <ScalarProperty Name="active" ColumnName="active" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="FindData_count" FunctionName="GimpyDataModel.Store.FindData_count">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="GimpyDataModel.FindData_count_Result">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="Category" ColumnName="Category" />
+                <ScalarProperty Name="email" ColumnName="email" />
+                <ScalarProperty Name="active" ColumnName="active" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="FindData_countActive" FunctionName="GimpyDataModel.Store.FindData_countActive">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="GimpyDataModel.FindData_countActive_Result">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="Category" ColumnName="Category" />
+                <ScalarProperty Name="email" ColumnName="email" />
+                <ScalarProperty Name="active" ColumnName="active" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="GetAllCampaignByUserID" FunctionName="GimpyDataModel.Store.GetAllCampaignByUserID">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="GimpyDataModel.GetAllCampaignByUserID_Result">
+                <ScalarProperty Name="RowNumber" ColumnName="RowNumber" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Active" ColumnName="Active" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="Date" ColumnName="Date" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="GetAllCampaignStatus" FunctionName="GimpyDataModel.Store.GetAllCampaignStatus">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="GimpyDataModel.GetAllCampaignStatus_Result">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="GetAllCompaign" FunctionName="GimpyDataModel.Store.GetAllCompaign">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="GimpyDataModel.GetAllCompaign_Result">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Active" ColumnName="Active" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="Date" ColumnName="Date" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="GetAllCompanyByID" FunctionName="GimpyDataModel.Store.GetAllCompanyByID">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="GimpyDataModel.GetAllCompanyByID_Result">
+                <ScalarProperty Name="RowNumber" ColumnName="RowNumber" />
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="Category" ColumnName="Category" />
+                <ScalarProperty Name="email" ColumnName="email" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="GetAllCompanyByUserID" FunctionName="GimpyDataModel.Store.GetAllCompanyByUserID">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="GimpyDataModel.GetAllCompanyByUserID_Result">
+                <ScalarProperty Name="RowNumber" ColumnName="RowNumber" />
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="Category" ColumnName="Category" />
+                <ScalarProperty Name="email" ColumnName="email" />
+                <ScalarProperty Name="active" ColumnName="active" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="GetAllCompanyGenresByUserID" FunctionName="GimpyDataModel.Store.GetAllCompanyGenresByUserID">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="GimpyDataModel.GetAllCompanyGenresByUserID_Result">
+                <ScalarProperty Name="genreid" ColumnName="genreid" />
+                <ScalarProperty Name="genre" ColumnName="genre" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="getallgenre" FunctionName="GimpyDataModel.Store.getallgenre" />
+          <FunctionImportMapping FunctionImportName="GetAllGenreByUserID" FunctionName="GimpyDataModel.Store.GetAllGenreByUserID" />
+          <FunctionImportMapping FunctionImportName="getallgenres" FunctionName="GimpyDataModel.Store.getallgenres" />
+          <FunctionImportMapping FunctionImportName="GetAllGenresByUserID" FunctionName="GimpyDataModel.Store.GetAllGenresByUserID">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="GimpyDataModel.GetAllGenresByUserID_Result">
+                <ScalarProperty Name="genreid" ColumnName="genreid" />
+                <ScalarProperty Name="genre" ColumnName="genre" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="GetAllInActiveCampaign" FunctionName="GimpyDataModel.Store.GetAllInActiveCampaign">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="GimpyDataModel.GetAllInActiveCampaign_Result">
+                <ScalarProperty Name="RowNumber" ColumnName="RowNumber" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Active" ColumnName="Active" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="Date" ColumnName="Date" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="GetAllInActiveCompany" FunctionName="GimpyDataModel.Store.GetAllInActiveCompany">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="GimpyDataModel.GetAllInActiveCompany_Result">
+                <ScalarProperty Name="RowNumber" ColumnName="RowNumber" />
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="Category" ColumnName="Category" />
+                <ScalarProperty Name="email" ColumnName="email" />
+                <ScalarProperty Name="active" ColumnName="active" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="GetAllInActiveCompany1" FunctionName="GimpyDataModel.Store.GetAllInActiveCompany1">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="GimpyDataModel.GetAllInActiveCompany1_Result">
+                <ScalarProperty Name="RowNumber" ColumnName="RowNumber" />
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="Category" ColumnName="Category" />
+                <ScalarProperty Name="email" ColumnName="email" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="GetAllInActiveCompanyByUserID" FunctionName="GimpyDataModel.Store.GetAllInActiveCompanyByUserID">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="GimpyDataModel.GetAllInActiveCompanyByUserID_Result">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="Category" ColumnName="Category" />
+                <ScalarProperty Name="email" ColumnName="email" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="GetCampaignByID" FunctionName="GimpyDataModel.Store.GetCampaignByID">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="GimpyDataModel.GetCampaignByID_Result">
+                <ScalarProperty Name="Date" ColumnName="Date" />
+                <ScalarProperty Name="Contact" ColumnName="Contact" />
+                <ScalarProperty Name="Note" ColumnName="Note" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="GetCampaignCompanies" FunctionName="GimpyDataModel.Store.GetCampaignCompanies">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="GimpyDataModel.GetCampaignCompanies_Result">
+                <ScalarProperty Name="RowNumber" ColumnName="RowNumber" />
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="Category" ColumnName="Category" />
+                <ScalarProperty Name="genre" ColumnName="genre" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="GetCampaignCompaniesCount" FunctionName="GimpyDataModel.Store.GetCampaignCompaniesCount" />
+          <FunctionImportMapping FunctionImportName="GetCampaignDataByID" FunctionName="GimpyDataModel.Store.GetCampaignDataByID">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="GimpyDataModel.GetCampaignDataByID_Result">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Active" ColumnName="Active" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="Date" ColumnName="Date" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="GetCategory" FunctionName="GimpyDataModel.Store.GetCategory">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="GimpyDataModel.GetCategory_Result">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="GetCategoryByUser" FunctionName="GimpyDataModel.Store.GetCategoryByUser">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="GimpyDataModel.GetCategoryByUser_Result">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="name" ColumnName="name" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="GetCompanyByID" FunctionName="GimpyDataModel.Store.GetCompanyByID">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="GimpyDataModel.GetCompanyByID_Result">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="CategoryId" ColumnName="CategoryId" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="PhoneNumber" ColumnName="PhoneNumber" />
+                <ScalarProperty Name="ContactName" ColumnName="ContactName" />
+                <ScalarProperty Name="AddressLine1" ColumnName="AddressLine1" />
+                <ScalarProperty Name="AddressLine2" ColumnName="AddressLine2" />
+                <ScalarProperty Name="TownCity" ColumnName="TownCity" />
+                <ScalarProperty Name="County" ColumnName="County" />
+                <ScalarProperty Name="Postcode" ColumnName="Postcode" />
+                <ScalarProperty Name="Country" ColumnName="Country" />
+                <ScalarProperty Name="Notes" ColumnName="Notes" />
+                <ScalarProperty Name="Active" ColumnName="Active" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="website" ColumnName="website" />
+                <ScalarProperty Name="Region" ColumnName="Region" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="GetCompanyDetailByID" FunctionName="GimpyDataModel.Store.GetCompanyDetailByID">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="GimpyDataModel.GetCompanyDetailByID_Result">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="Category" ColumnName="Category" />
+                <ScalarProperty Name="email" ColumnName="email" />
+                <ScalarProperty Name="phonenumber" ColumnName="phonenumber" />
+                <ScalarProperty Name="contactname" ColumnName="contactname" />
+                <ScalarProperty Name="addressline1" ColumnName="addressline1" />
+                <ScalarProperty Name="addressline2" ColumnName="addressline2" />
+                <ScalarProperty Name="towncity" ColumnName="towncity" />
+                <ScalarProperty Name="postcode" ColumnName="postcode" />
+                <ScalarProperty Name="country" ColumnName="country" />
+                <ScalarProperty Name="notes" ColumnName="notes" />
+                <ScalarProperty Name="active" ColumnName="active" />
+                <ScalarProperty Name="website" ColumnName="website" />
+                <ScalarProperty Name="region" ColumnName="region" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="GetCompanyID" FunctionName="GimpyDataModel.Store.GetCompanyID" />
+          <FunctionImportMapping FunctionImportName="getcurrentuserid" FunctionName="GimpyDataModel.Store.getcurrentuserid" />
+          <FunctionImportMapping FunctionImportName="getgenrebyuserid" FunctionName="GimpyDataModel.Store.getgenrebyuserid">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="GimpyDataModel.getgenrebyuserid_Result">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="Getpassword" FunctionName="GimpyDataModel.Store.Getpassword">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="GimpyDataModel.Getpassword_Result">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="LastName" ColumnName="LastName" />
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+                <ScalarProperty Name="Country" ColumnName="Country" />
+                <ScalarProperty Name="BandArtist" ColumnName="BandArtist" />
+                <ScalarProperty Name="Company" ColumnName="Company" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="GetUserIDByEmail" FunctionName="GimpyDataModel.Store.GetUserIDByEmail">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="GimpyDataModel.GetUserIDByEmail_Result">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="LastName" ColumnName="LastName" />
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+                <ScalarProperty Name="Country" ColumnName="Country" />
+                <ScalarProperty Name="BandArtist" ColumnName="BandArtist" />
+                <ScalarProperty Name="Company" ColumnName="Company" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="InsertCompaniesToCampaign" FunctionName="GimpyDataModel.Store.InsertCompaniesToCampaign" />
+          <FunctionImportMapping FunctionImportName="insertgenrebyuser" FunctionName="GimpyDataModel.Store.insertgenrebyuser" />
+          <FunctionImportMapping FunctionImportName="InsertIntoResetpassword" FunctionName="GimpyDataModel.Store.InsertIntoResetpassword" />
+          <FunctionImportMapping FunctionImportName="LoginCheck" FunctionName="GimpyDataModel.Store.LoginCheck" />
+          <FunctionImportMapping FunctionImportName="LoginCheckEncrypt" FunctionName="GimpyDataModel.Store.LoginCheckEncrypt" />
+          <FunctionImportMapping FunctionImportName="LoginVerify" FunctionName="GimpyDataModel.Store.LoginVerify" />
+          <FunctionImportMapping FunctionImportName="RegisterUser" FunctionName="GimpyDataModel.Store.RegisterUser" />
+          <FunctionImportMapping FunctionImportName="SortCampaign" FunctionName="GimpyDataModel.Store.SortCampaign">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="GimpyDataModel.SortCampaign_Result">
+                <ScalarProperty Name="RowNumber" ColumnName="RowNumber" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Active" ColumnName="Active" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="Date" ColumnName="Date" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="SortContact" FunctionName="GimpyDataModel.Store.SortContact">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="GimpyDataModel.SortContact_Result">
+                <ScalarProperty Name="RowNumber" ColumnName="RowNumber" />
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="Category" ColumnName="Category" />
+                <ScalarProperty Name="email" ColumnName="email" />
+                <ScalarProperty Name="active" ColumnName="active" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="UpdateCampaign" FunctionName="GimpyDataModel.Store.UpdateCampaign" />
+          <FunctionImportMapping FunctionImportName="UpdateCompanyByID" FunctionName="GimpyDataModel.Store.UpdateCompanyByID" />
+          <FunctionImportMapping FunctionImportName="updateCompanyGenre" FunctionName="GimpyDataModel.Store.updateCompanyGenre" />
+          <FunctionImportMapping FunctionImportName="UpdateGenreByCompanyID" FunctionName="GimpyDataModel.Store.UpdateGenreByCompanyID" />
+          <FunctionImportMapping FunctionImportName="GetAllActiveContacts" FunctionName="GimpyDataModel.Store.GetAllActiveContacts">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="GimpyDataModel.GetAllActiveContacts_Result">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="Category" ColumnName="Category" />
+                <ScalarProperty Name="email" ColumnName="email" />
+                <ScalarProperty Name="active" ColumnName="active" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="GetAllInActiveContacts" FunctionName="GimpyDataModel.Store.GetAllInActiveContacts">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="GimpyDataModel.GetAllInActiveContacts_Result">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="Category" ColumnName="Category" />
+                <ScalarProperty Name="email" ColumnName="email" />
+                <ScalarProperty Name="active" ColumnName="active" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="Find_Contacts" FunctionName="GimpyDataModel.Store.Find_Contacts">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="GimpyDataModel.Find_Contacts_Result">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="Category" ColumnName="Category" />
+                <ScalarProperty Name="email" ColumnName="email" />
+                <ScalarProperty Name="active" ColumnName="active" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="FindActive_Contacts" FunctionName="GimpyDataModel.Store.FindActive_Contacts">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="GimpyDataModel.FindActive_Contacts_Result">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="Category" ColumnName="Category" />
+                <ScalarProperty Name="email" ColumnName="email" />
+                <ScalarProperty Name="active" ColumnName="active" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="GetAllInActiveCampaigns" FunctionName="GimpyDataModel.Store.GetAllInActiveCampaigns">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="GimpyDataModel.GetAllInActiveCampaigns_Result">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Active" ColumnName="Active" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="Date" ColumnName="Date" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="GetRegionByCountry" FunctionName="GimpyDataModel.Store.GetRegionByCountry" />
+          <FunctionImportMapping FunctionImportName="GetCountryByUser" FunctionName="GimpyDataModel.Store.GetCountryByUser" />
+          <FunctionImportMapping FunctionImportName="GetAllActiveCampaigns" FunctionName="GimpyDataModel.Store.GetAllActiveCampaigns">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="GimpyDataModel.GetAllActiveCampaigns_Result">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Active" ColumnName="Active" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="Date" ColumnName="Date" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

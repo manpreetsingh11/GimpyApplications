@@ -1,0 +1,96 @@
+﻿@{
+    if (Session["userinfo"] == null)
+    {
+        Response.Redirect(Url.Action("Login", "Account"));
+    }
+}
+
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="content-type" content="text/html;charset=UTF-8" />
+    <meta charset="utf-8" />
+    <title>@ViewBag.Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no" />
+    <link rel="icon" type="image/x-icon" href="@Url.Content("~/Content/Images/favicon.ico")" />
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-touch-fullscreen" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta content="" name="description" />
+    <meta content="" name="author" />
+    @*@Styles.Render("~/Content/css")*@
+    
+    <link type="text/css" rel="stylesheet" href="@Url.Content("~/Content/assets/plugins/pace/pace-theme-flash.css")" />
+    <link type="text/css" rel="stylesheet" href="@Url.Content("~/Content/assets/plugins/simple-line-icons/simple-line-icons.css")" />
+    <link type="text/css" rel="stylesheet" href="@Url.Content("~/Content/assets/plugins/boostrapv3/css/bootstrap.min.css")" />
+    <link type="text/css" rel="stylesheet" href="@Url.Content("~/Content/assets/plugins/font-awesome/css/font-awesome.css")" />
+    <link type="text/css" rel="stylesheet" href="@Url.Content("~/Content/assets/plugins/jquery-scrollbar/jquery.scrollbar.css")" />
+    <link type="text/css" rel="stylesheet" href="@Url.Content("~/Content/assets/plugins/bootstrap-select2/select2.css")" />
+    <link type="text/css" rel="stylesheet" href="@Url.Content("~/Content/assets/plugins/switchery/css/switchery.min.css")" />
+    <link type="text/css" rel="stylesheet" href="@Url.Content("~/Content/assets/plugins/nvd3/nv.d3.min.css")" />
+    <link type="text/css" rel="stylesheet" href="@Url.Content("~/Content/assets/plugins/mapplic/css/mapplic.css")" />
+    <link type="text/css" rel="stylesheet" href="@Url.Content("~/Content/assets/plugins/rickshaw/rickshaw.min.css")" />
+    <link type="text/css" rel="stylesheet" href="@Url.Content("~/Content/assets/plugins/bootstrap-datepicker/css/datepicker3.css")" />
+    <link type="text/css" rel="stylesheet" href="@Url.Content("~/Content/assets/plugins/jquery-metrojs/MetroJs.css")" />
+    <link type="text/css" rel="stylesheet" href="@Url.Content("~/Content/pages/css/pages-icons.css")" />
+    <link type="text/css" rel="stylesheet" href="@Url.Content("~/Content/pages/css/pages.css")" />
+
+    <link type="text/css" rel="stylesheet" href="@Url.Content("~/Content/GimpySoftwareFront/css/colors.css")" />
+    <link type="text/css" rel="stylesheet" href="@Url.Content("~/Content/GimpySoftwareFront/ColorBox/colorbox.css")" />
+    @RenderSection("Styles", required: false)
+
+</head>
+<body class="fixed-header dashboard">
+    @Html.Partial("_MenuLayout")
+
+    <!-- START PAGE-CONTAINER -->
+    <div class="page-container ">
+        @Html.Partial("_HeaderLayout")
+        <!-- START PAGE CONTENT WRAPPER -->
+        <div class="page-content-wrapper ">
+            
+            @Html.Partial("PartialBreadCrumb")
+            <!-- START PAGE CONTENT -->
+            <div class="content sm-gutter">
+                <!-- START CONTAINER FLUID -->
+                <div class="container-fluid padding-25 sm-padding-10">
+                    <h1 style="margin-left:25px;font-size:45px;margin-top:-20px;padding:20px">@ViewBag.Heading</h1>
+
+                    <!-- START ROW -->
+                    <div class="row">
+                        <div class="col-md-12 col-xlg-5">
+                            @RenderBody()
+                        </div>
+                    </div>
+                    <!-- END ROW -->
+                </div>
+                <!-- END CONTAINER FLUID -->
+            </div>
+            <!-- END PAGE CONTENT -->
+            <!-- START COPYRIGHT -->
+            <!-- START CONTAINER FLUID -->
+            <!-- START CONTAINER FLUID -->
+            <div class="container-fluid container-fixed-lg footer">
+                <div class="copyright sm-text-center">
+                    <p class="small no-margin pull-left sm-pull-reset">
+                        <span class="hint-text">Copyright &copy; 2014 </span>
+                        <span class="font-montserrat">Gimpy Softwares</span>.
+                        <span class="hint-text">All rights reserved. </span>
+                    </p>
+                    <p class="small no-margin pull-right sm-pull-reset">
+                    </p>
+                    <div class="clearfix"></div>
+                </div>
+            </div>
+            <!-- END COPYRIGHT -->
+        </div>
+        <!-- END PAGE CONTENT WRAPPER -->
+    </div>
+    <!-- END PAGE CONTAINER -->
+    @Scripts.Render("~/bundles/jquery")
+    <script type="text/javascript" src="@Url.Content("~/Content/GimpySoftwareFront/ColorBox/jquery.colorbox.js")"></script>
+    @RenderSection("scripts", required: false)
+
+</body>
+</html>

@@ -1,0 +1,156 @@
+﻿@{
+    ViewBag.Title = "AllCampaigns";
+    ViewBag.Heading = "Campaign";
+    ViewBag.Module = "Campaign";
+    ViewBag.SubModule = "Add Cammpaigns";
+    Layout = "~/Views/Shared/_MainLayout.cshtml";
+    var status = "-1";
+    if (Request.Url.Query.Contains("status"))
+    {
+        status = Request.QueryString["status"];
+    }
+    else if (Session["status"] != null)
+    {
+        status = Session["status"].ToString();
+    }
+}
+@section Styles {
+    <link href="@Url.Content("~/Content/assets/plugins/jquery-datatable/media/css/dataTables.bootstrap.min.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Content/assets/plugins/jquery-datatable/extensions/FixedColumns/css/dataTables.fixedColumns.min.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Content/assets/plugins/datatables-responsive/css/datatables.responsive.css")" rel="stylesheet" type="text/css" media="screen" />
+}
+<div class="container-fluid container-fixed-lg">
+    <div class="row">
+        <div class="col-md-12">
+            <!-- START PANEL -->
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <form role="form" id="frmaddcontact" method="post">
+                        <div></div>
+                        @*<div class="row">
+                            <div class="col-md-4">
+                                <div style="height:20px"></div>
+                                <div class="clearfix"></div> 
+                                <div class="form-group">
+                                    <label>Campaign</label>
+                                    <input type="text" class="form-control input-sm" name="campaign" required>
+                                </div>
+                                <div style="height:20px"></div>
+                                <div class="form-group">
+                                    <input class="btn btn-info btn-cons m-b-10" value="Search" type="submit" />
+                                </div>
+                            </div>
+                        </div>*@
+                        <div class="row">
+                            <div class="panel-heading">
+                                <div class="pull-left">
+                                    <h3>
+                                        Campaign Contacts
+                                    </h3>
+                                </div>
+                                <div class="pull-right">
+                                    <div class="col-xs-12">
+                                        <button id="show-modal" class="btn btn-info btn-danger">
+                                            <i class="fa fa-minus"></i> Delete
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <div class="pull-right">
+                                    <div class="col-xs-12">
+                                        <a href="@Url.Action("AddCampaign","Campaign")" id="show-modal" class="btn btn-info btn-cons">
+                                            <i class="fa fa-plus"></i> Add Campaign
+                                        </a>
+                                    </div>
+                                </div>
+                                <div class="pull-right" style="margin-right:15px">
+                                    <div class="col-sm-12">
+                                        <input type="checkbox" name="chkactives" id="chkactive" @((status == "inactive") ? "checked" : "") data-init-plugin="switchery" style="background-color:#ff0000" data-size="medium" />
+                                        <label style="padding:7px; font-size:11px"><b>INACTIVE</b></label>
+                                    </div>
+                                </div>
+                                <div class="clearfix"></div>
+                            </div><br />
+                            <div style="padding:10px;border:1px solid rgba(0, 0, 0, 0.20)">
+                                <div class="">
+                                    <div class="pull-left">
+                                        <div class="checkbox check-info" style="margin-left:50px">
+                                            <input type="checkbox" name="chkgenre">
+                                            <label style="color:#626262">Select All</label>
+                                        </div>
+                                    </div>
+                                    @*<div class="pull-right">
+                                        <select class="full-width" data-init-plugin="select2" name="droppaging" id="droppaging">
+                                            <option>5</option>
+                                            <option>10</option>
+                                            <option>20</option>
+                                            <option>50</option>
+                                        </select>
+                                    </div>*@
+
+                                    <div class="clearfix"></div>
+                                </div>
+
+
+
+                                @Html.Partial("PartialTableAllCampaigns")
+
+
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <!-- END PANEL -->
+        </div>
+
+    </div>
+</div>
+@section Scripts {
+    <script src="@Url.Content("~/Content/assets/plugins/jquery-datatable/media/js/jquery.dataTables.min.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/assets/plugins/jquery-datatable/extensions/TableTools/js/dataTables.tableTools.min.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/assets/plugins/jquery-datatable/media/js/dataTables.bootstrap.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/assets/plugins/jquery-datatable/extensions/Bootstrap/jquery-datatable-bootstrap.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/assets/plugins/datatables-responsive/js/datatables.responsive.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/assets/plugins/datatables-responsive/js/lodash.min.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/assets/js/datatables.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/assets/js/scripts.js")" type="text/javascript"></script>
+
+<script>
+    $(document).ready(function () {
+        var checkboxClicked = false;
+        $('#tableWithDynamicRows').DataTable({
+            bDestroy: true,
+        });
+
+        $('#chkactive').change(function () {
+            @*var chkactive = $('#chkactive').val();
+            if ('@Session["status"]' != '@null') {
+                if ('@Session["status"].ToString()' == 'inactive' || '@Session["status"].ToString()' == "") {
+                    var path = '@Url.Action("AllCampaigns", "Campaign", new { status = "inactive" })'
+                    window.location.href = path;
+
+                }
+                else {
+                    var path = '@Url.Action("AllCampaigns", "Campaign", new { status = "active" })'
+                    window.location.href = path;
+                }
+            }*@
+
+        });
+
+        $("#tableWithDynamicRows").delegate("tr.rows", "click", function () {
+            if (!checkboxClicked) {
+                cid = $(this).find("td.tdid input").val();
+                var Campaign = 'AddContactToCampaign?cid='+cid;
+                window.location.href = Campaign;
+            }
+            else {
+                checkboxClicked = false;
+            }
+        });
+    });
+
+    </script>
+
+}

@@ -1,0 +1,79 @@
+﻿@{
+    var companies = ViewBag.allcompanies;
+    var status = "-1";
+    if (Request.Url.Query.Contains("status"))
+    {
+        status = Request.QueryString["status"];
+    }
+    else if (Session["status"] != null)
+    {
+        status = Session["status"].ToString();
+    }
+    var country = ViewBag.country;
+    
+}
+
+
+
+    <table class="table table-hover demo-table-dynamic" id="tableWithDynamicRows">
+            <thead style="background-color: rgb(59, 71, 82);">
+                <tr>
+                    <th  style="width:2%;cursor:pointer;" id="thchk"></th>
+                    <th style="width:36%;cursor:pointer;">Company</th>
+                    <th style="width:30%;cursor:pointer;">Category</th>
+                    <th style="width:30%;cursor:pointer;">Email</th>
+                    <th class="sorting_disabled" style="width:2%;cursor:pointer;" id="tdedit"></th>
+                </tr>
+            </thead>
+            <tbody id="tblbody">
+                @{
+                    if (companies != null)
+                    {
+                        foreach (var company in companies)
+                        {
+                            if (company.active != true)
+                            {
+                                <tr style="background-color:lightgray; color:maroon; cursor:pointer;" >
+                                    <td style="padding-left: 10px;" class="tdid">
+                                        <div class="checkbox check-info">
+                                            <input type="checkbox" value="@company.id" id="@("checkbox" + @company.id)" class="chkall" name="chkall">
+                                            <label for="@("checkbox" + @company.id)"></label>
+                                        </div>
+                                    </td>
+                                    <td class="v-align-middle"><p>@company.name</p></td>
+                                    <td class="v-align-middle"><p>@company.Category</p></td>
+                                    <td class="v-align-middle"><p>@company.email</p></td>
+                                    <td class="tdedit">
+                                        <a class="tdedit" href="@Url.Action("EditContact", "Contacts", new { ID = @company.id })">
+                                            Edit
+                                        </a>
+                                    </td>
+                                </tr>
+                            }
+                            else
+                            {
+                                <tr  style="cursor:pointer;">
+                                    <td style="padding-left: 10px;" class="tdid" id="tdchk">
+                                        <div class="checkbox check-info">
+                                            <input type="checkbox" value="@company.id" id="@("checkbox" + company.id)" class="chkall" name="chkall">
+                                            <label for="@("checkbox" + company.id)"></label>
+                                        </div>
+                                    </td>
+                                    <td class="v-align-middle"><p>@company.name</p></td>
+                                    <td class="v-align-middle"><p>@company.Category</p></td>
+                                    <td class="v-align-middle"><p>@company.email</p></td>
+                                    <td class="tdedit">
+                                        <a class="tdedit" href="@Url.Action("EditContact", "Contacts", new { ID = @company.id })">
+                                            Edit
+                                        </a>
+                                    </td>
+                                </tr>
+                            }
+
+                        }
+                    }
+                }
+            </tbody>
+
+        </table>
+

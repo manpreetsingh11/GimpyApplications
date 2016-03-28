@@ -1,0 +1,519 @@
+﻿@{
+    Layout = "~/Views/Shared/_LayoutLogin.cshtml";
+    ViewBag.Title = "Register";
+}
+<script type="text/javascript" src="@Url.Content("~/Content/js/countries.js")"></script>
+
+<style>
+    /*.form-group-default has-error:focus {
+        border: 1px solid black;
+    }*/
+
+    .form-group:focus {
+        border: 1px solid black;
+    }
+
+    .form-group-default {
+        border: 1px solid black;
+        border-radius: 4px;
+    }
+
+    label {
+        color: white;
+        padding-top: 2px;
+    }
+
+    .pops {
+        border: 1px solid #DD3636;
+        box-shadow: 0 0 9px rgba(191, 191, 191, 0.36);
+        z-index: 800;
+        position: absolute;
+        background-color: #DD3636;
+        padding: 5px;
+        font-family: 'helvetica neue';
+        font-size: 14px;
+        font-weight: 400;
+        line-height: 1.42857143;
+        max-width: 276px;
+        border-radius: 6px;
+        color: white;
+        left: -5px;
+        visibility: hidden;
+    }
+
+    .arrow-down {
+        width: 0;
+        height: 0;
+        position: absolute;
+        border-top: 8px solid transparent;
+        border-bottom: 8px solid transparent;
+        border-right: 9px solid #DD3636;
+        left: -14px;
+        top: 8px;
+        /*left:-105px;*/
+        z-index: 820;
+        visibility: hidden;
+    }
+</style>
+
+<div class="container-fluid container-fixed-lg">
+
+    <div class="col-sm-12">
+
+        <form id="form-login" class="p-t-15" role="form" method="post" action="@Url.Action("Register","Account")">
+            <div style="width:100%; clear:both;">
+                <h1 style="margin-top:20px;clear:both;" class="pull-left">Register</h1>
+                <img src="~/Content/Images/loading.gif" id="imgloader" style="visibility: hidden; padding-left:170px; padding-top: 63px;">
+            </div>
+            <div style="clear:both;"></div><div style="height:15px;"></div>
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="form-group form-group-default">
+                        <div class="controls">
+                            <input type="email" name="email" id="email" placeholder="Enter email * " class="form-control" required>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="form-group" id="divemail" style="display:none;">
+                        <div class="pops" id="msgemail"></div>
+                        <div class="arrow-down" id="emailarrow"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+
+                <div class="col-sm-6">
+                    <div class="form-group form-group-default">
+                        <div class="controls">
+
+                            <input type="email" name="re_email" id="re_email" placeholder="Re-enter email * " class="form-control" required>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="col-sm-6">
+                    <div class="form-group" id="divre_email" style="display:none;">
+                        <div class="pops" id="msgre_email"></div>
+                        <div class="arrow-down" id="re_emailarrow"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+
+                <div class="col-sm-6">
+
+                    <div class="form-group form-group-default">
+
+                        <div class="controls">
+                            <input type="password" name="password" id="password" title="Minimum of 8 Charactors" placeholder="Enter password * " class="form-control" required>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="col-sm-6">
+                    <div class="form-group" id="divpassword" style="display:none;">
+                        <div class="pops" id="msgpassword"></div>
+                        <div class="arrow-down" id="passwordarrow"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+
+                <div class="col-sm-6">
+                    <div class="form-group form-group-default">
+                        <div class="controls">
+                            <input type="password" name="re_password" title="Minimum of 8 Charactors" id="re_password" placeholder="Re-enter password * " class="form-control" required>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="form-group" id="divre_password" style="display:none;">
+                        <div class="pops" id="msgre_password"></div>
+                        <div class="arrow-down" id="re_passwordarrow"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+
+                <div class="col-sm-6">
+                    <div class="form-group ">
+                        <div class="controls">
+                            <select class="full-width" data-init-plugin="select2" required name="country" id="country"></select>
+                            <script language="javascript">print_country("country");</script>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="col-sm-6">
+                    <div class="form-group" id="divcountry" style="display:none;">
+                        <div class="pops" id="msgcountry"></div>
+                        <div class="arrow-down" id="countryarrow"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+
+                <div class="col-sm-6">
+                    <div class="form-group form-group-default">
+                        <div class="controls">
+                            <input type="text" name="fname" placeholder="First name" class="form-control">
+                        </div>
+                    </div>
+
+                </div>
+                <div class="col-sm-6">
+                    <div class="form-group form-group-default">
+                        <div class="controls">
+                            <input type="text" name="lname" placeholder="Last name" class="form-control">
+
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="row">
+
+
+                <div class="col-sm-6">
+
+                    <div class="form-group form-group-default">
+                        <div class="controls">
+                            <input type="text" name="bandartist" placeholder="Enter band artist" class="form-control">
+                        </div>
+                    </div>
+
+                </div>
+                <div class="col-sm-6">
+                    <div class="form-group form-group-default">
+                        <div class="controls">
+                            <input style="padding-right:15px" type="text" name="company" placeholder="Enter company name" class="form-control">
+
+                        </div>
+                    </div>
+                    <div class="form-group  ">
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-1">
+
+                </div>
+                @*<div class="col-sm-6">
+                        <div class="form-group  ">
+                            <input style="padding-right:15px" type="text" name="company" placeholder="Enter company name" class="form-control">
+                        </div>
+                    </div>*@
+            </div>
+            <div class="row">
+
+                <div class="col-sm-6">
+                    <div class="form-group  ">
+                        <button id="btnregister" class="btn btn-success btn-cons m-t-10" type="submit">Sign up</button>
+                        <a href="@Url.Action("Login","Account")" class="btn btn-danger btn-cons m-t-10">Cancel</a>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<!-- END Login Right Container-->
+@section Scripts {
+
+    @Scripts.Render("~/bundles/login")
+
+    <script>
+        $(document).ready(function () {
+
+            var arr = Array();
+            var check = 0;
+            var message = "";
+
+            function messageMaker() {
+                if (arr.length != 0) {
+                    $('#btnregister').attr('disabled', 'disabled');
+                }
+                else {
+                    $('#btnregister').removeAttr('disabled');
+                }
+            }
+            function insertIfNotExists(val) {
+                var index = arr.indexOf(val);
+                if (index == -1) {
+                    arr.push(val);
+                }
+            }
+            function removeIfExists(val) {
+                var index = arr.indexOf(val);
+
+                if (index > -1) {
+                    arr.splice(index, 1);
+                }
+            }
+            function displayEmailMessage(message) {
+                $('#msgemail').html(message);
+                $('#divemail').css('display', 'block');
+                $('#emailarrow').css('visibility', 'visible');
+                $('#msgemail').css('visibility', 'visible');
+            }
+            function displayRe_EmailMessage(message) {
+                $('#msgre_email').html(message);
+                $('#divre_email').css('display', 'block');
+                $('#re_emailarrow').css('visibility', 'visible');
+                $('#msgre_email').css('visibility', 'visible');
+            }
+            function displayPasswordMessage(message) {
+                $('#msgpassword').html(message);
+                $('#divpassword').css('display', 'block');
+                $('#passwordarrow').css('visibility', 'visible');
+                $('#msgpassword').css('visibility', 'visible');
+            }
+            function displayRe_PasswordMessage(message) {
+                $('#msgre_password').html(message);
+                $('#divre_password').css('display', 'block');
+                $('#re_passwordarrow').css('visibility', 'visible');
+                $('#msgre_password').css('visibility', 'visible');
+            }
+            function displayCountryMessage(message) {
+                $('#msgcountry').html(message);
+                $('#divcountry').css('display', 'block');
+                $('#countryarrow').css('visibility', 'visible');
+                $('#msgcountry').css('visibility', 'visible');
+            }
+            function hideEmailMessage(message) {
+                $('#msgemail').html(message);
+                $('#divemail').css('display', 'none');
+                $('#emailarrow').css('visibility', 'hidden');
+                $('#msgemail').css('visibility', 'hidden');
+            }
+            function hideRe_EmailMessage(message) {
+                $('#msgre_email').html(message);
+                $('#divre_email').css('display', 'none');
+                $('#re_emailarrow').css('visibility', 'hidden');
+                $('#msgre_email').css('visibility', 'hidden');
+            }
+            function hidePasswordMessage(message) {
+                $('#msgpassword').html(message);
+                $('#divpassword').css('display', 'none');
+                $('#passwordarrow').css('visibility', 'hidden');
+                $('#msgpassword').css('visibility', 'hidden');
+            }
+            function hideRe_PasswordMessage(message) {
+                $('#msgre_password').html(message);
+                $('#divre_password').css('display', 'none');
+                $('#re_passwordarrow').css('visibility', 'hidden');
+                $('#msgre_password').css('visibility', 'hidden');
+            }
+            function hideCountryMessage(message) {
+                $('#mscountry').html(message);
+                $('#divcountry').css('display', 'none');
+                $('#countryarrow').css('visibility', 'hidden');
+                $('#msgcountry').css('visibility', 'hidden');
+            }
+            $('#email').blur(function () {
+                var email = $('#email').val();
+                var re_email = $('#re_email').val();
+                if (email.length != 0) {
+                    checkMail(email, re_email);
+                }
+                else {
+                    hideEmailMessage('');
+                }
+            });
+            $('#email').keydown(function () {
+                hideEmailMessage();
+            });
+            $('#re_email').blur(function () {
+                var email = $('#email').val();
+                var re_email = $('#re_email').val();
+                if (re_email.length != 0) {
+                    if (email.length != 0) {
+                        if (re_email != email) {
+                            removeIfExists('error');
+                            message = 'Email not matched';
+                            displayRe_EmailMessage(message)
+                        }
+                        else {
+                            removeIfExists('error');
+                            if (check == 0) {
+                                hideEmailMessage('');
+                            }
+                            hideRe_EmailMessage('');
+                        }
+                    }
+                    else {
+                        removeIfExists('error');
+                        hideRe_EmailMessage('');
+                    }
+                }
+                messageMaker();
+            });
+            $('#re_email').keydown(function () {
+                hideRe_EmailMessage();
+            });
+            $('#password').blur(function () {
+                var pass = $('#password').val();
+                var re_pass = $('#re_password').val();
+                if (pass.length != 0) {
+                    if (/^[a-zA-Z0-9]*$/.test(pass) == true) {
+                        insertIfNotExists('error');
+                        if (pass.length < 8) {
+                            insertIfNotExists('error');
+                            displayPasswordMessage('Password length should be greater than 8!')
+                        }
+                        else {
+                            hidePasswordMessage('');
+                            if (re_pass.length != 0) {
+                                if (pass != re_pass) {
+                                    insertIfNotExists('error');
+                                    displayPasswordMessage('Password not matched!');
+                                }
+                                else {
+                                    removeIfExists('error');
+                                    hidePasswordMessage('');
+                                    hideRe_PasswordMessage('');
+                                }
+                            }
+                        }
+                    }
+                    else {
+                        insertIfNotExists('error');
+                        displayPasswordMessage('Password contains illegal chracters');
+                    }
+                }
+                else {
+                    removeIfExists('error');
+                    hidePasswordMessage('');
+                }
+                messageMaker();
+            });
+            $('#password').keydown(function () {
+                hidePasswordMessage();
+            });
+            $('#re_password').blur(function () {
+                var pass = $('#password').val();
+                var re_pass = $('#re_password').val();
+
+                if (re_pass.length != 0) {
+                    if (/^[a-zA-Z0-9]*$/.test(re_pass) == true) {
+                        insertIfNotExists('error');
+
+                        if (re_pass.length < 8) {
+                            insertIfNotExists('error');
+                            displayRe_PasswordMessage('Password length should be greater than 8!')
+                        }
+                        else {
+                            removeIfExists('error');
+                            hideRe_PasswordMessage('');
+                            if (pass.length != 0) {
+                                if (pass != re_pass) {
+                                    insertIfNotExists('error');
+                                    displayRe_PasswordMessage('Password not matched!');
+                                }
+                                else {
+                                    removeIfExists('error');
+                                    hidePasswordMessage('');
+                                    hideRe_PasswordMessage('');
+                                }
+                            }
+                        }
+                    }
+                    else {
+                        insertIfNotExists('error');
+                        displayRe_PasswordMessage('Password contains illegal chracters');
+                    }
+
+                }
+                else {
+                    removeIfExists('error');
+                    hideRe_PasswordMessage('');
+                }
+                messageMaker();
+
+            });
+            $('#re_password').keydown(function () {
+                hideRe_PasswordMessage();
+            });
+            $('#btnregister').click(function () {
+                var email = $('#email').val();
+                var re_email = $('#re_email').val();
+                var pass = $('#password').val();
+                var re_pass = $('#re_password').val();
+
+                if (email.length == 0 && re_email.length == 0 && pass.length == 0 && re_pass.length == 0) {
+                    displayEmailMessage('Please enter email!');
+                    displayRe_EmailMessage('Please re-enter email!');
+                    displayPasswordMessage('Please enter password!');
+                    displayRe_PasswordMessage('Please re-enter password!');
+                }
+                if ($("#country option:selected").index() > 0) {
+                    removeIfExists('error');
+                    hideCountryMessage('');
+                    messageMaker();
+
+                }
+                else {
+                    insertIfNotExists('error');
+                    displayCountryMessage('Please select country!');
+                    messageMaker();
+                    return false;
+                }
+            });
+            $('#country').change(function () {
+                if ($("#country option:selected").index() > 0) {
+                    removeIfExists('error');
+                    hideCountryMessage('');
+                    messageMaker();
+                }
+                else {
+                    insertIfNotExists('error');
+                    displayCountryMessage('Please select country!');
+                    messageMaker();
+                    return false;
+                }
+            });
+            function checkMail(email, re_email) {
+                $('#imgloader').css('visibility', 'visible');
+                check = 0;
+                $.getJSON("CheckEmailExists/Account", { emailid: email }, function (data) {
+                    if (data != 0) {
+                        check = 1;
+                        displayEmailMessage('Email already exists!');
+                        $('#imgloader').css('visibility', 'hidden');
+                        if (re_email.length != 0) {
+                            if (email != re_email) {
+                                displayEmailMessage('Email not matched!');
+                            }
+                        }
+                        insertIfNotExists('error');
+                    }
+                    else {
+                        removeIfExists('error');
+                        if (re_email.length != 0) {
+                            if (email != re_email) {
+                                check = 0;
+                                insertIfNotExists('error');
+                                displayEmailMessage('Email not matched!');
+                                $('#imgloader').css('visibility', 'hidden');
+                            }
+                            else {
+                                removeIfExists('error');
+                                hideRe_EmailMessage('');
+                                if (check == 0) {
+                                    hideEmailMessage('');
+                                }
+                            }
+                        }
+                        else {
+                            hideEmailMessage('');
+                        }
+
+                        $('#imgloader').css('visibility', 'hidden');
+                    }
+                });
+                messageMaker();
+            }
+        });
+    </script>
+}
